@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <!-- Thêm Bootstrap 5 -->
-    <link href="assets/bs5/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .discount-label {
+            border-radius: 0 10px 0 10px;
+            padding: 5px 10px;
+        }
+    </style>
 </head>
 <body>
     <a href="/dashboard" class="back-to-dashboard">
@@ -16,43 +23,48 @@
         <h1 class="text-center mb-4">Quản lý kho</h1>
 
         <!-- Form thêm mới sản phẩm -->
-        <h2>Thêm sản phẩm mới</h2>
-        <form action="/products/new" method="POST" enctype="multipart/form-data" class="mb-4">
-            <div class="mb-3">
-                <label for="name" class="form-label">Tên sản phẩm:</label>
-                <input type="text" id="name" name="name" class="form-control" required>
+        <% if (categories.length > 0) { %>
+            <h2>Thêm sản phẩm mới</h2>
+            <form action="/products/new" method="POST" enctype="multipart/form-data" class="mb-4">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Tên sản phẩm:</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Mô tả sản phẩm:</label>
+                    <textarea id="description" name="description" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Giá:</label>
+                    <input type="number" id="price" name="price" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Số lượng:</label>
+                    <input type="number" id="stock" name="stock" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Hình ảnh sản phẩm:</label>
+                    <input type="file" id="image" name="image" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Danh mục:</label>
+                    <select id="category" name="category" class="form-select" required>
+                        <% categories.forEach(category => { %>
+                            <option value="<%= category.name %>"><%= category.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="discountPercentage" class="form-label">Phần trăm giảm giá (%):</label>
+                    <input type="number" id="discountPercentage" name="discountPercentage" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+            </form>
+        <% } else { %>
+            <div class="alert alert-warning text-center">
+                Không có danh mục nào. Vui lòng thêm danh mục trước khi thêm sản phẩm.
             </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Mô tả sản phẩm:</label>
-                <textarea id="description" name="description" class="form-control"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="price" class="form-label">Giá:</label>
-                <input type="number" id="price" name="price" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="stock" class="form-label">Số lượng:</label>
-                <input type="number" id="stock" name="stock" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Hình ảnh sản phẩm:</label>
-                <input type="file" id="image" name="image" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="category" class="form-label">Danh mục:</label>
-                <select id="category" name="category" class="form-select" required>
-                    <% categories.forEach(category => { %>
-                        <option value="<%= category.name %>"><%= category.name %></option>
-                    <% }) %>
-                </select>
-            </div>
-            <!-- Phần thêm khuyến mãi -->
-            <div class="mb-3">
-                <label for="discountPercentage" class="form-label">Phần trăm giảm giá (%):</label>
-                <input type="number" id="discountPercentage" name="discountPercentage" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
-        </form>
+        <% } %>
 
         <!-- Form thêm danh mục -->
         <h2>Thêm danh mục mới</h2>
@@ -70,55 +82,55 @@
             <% products.forEach(product => { %>
                 <div class="col-md-4 mb-4">
                     <div class="card position-relative">
-                        <!-- Nhãn giảm giá -->
                         <% if (product.discountPercentage > 0) { %>
-                            <div class="discount-label bg-danger text-white p-1 position-absolute top-0 end-0">
+                            <div class="discount-label bg-danger text-white position-absolute top-0 end-0">
                                 -<%= product.discountPercentage %>%
                             </div>
                         <% } %>
-            
                         <img src="<%= product.imageUrl %>" class="card-img-top" alt="Hình ảnh sản phẩm">
                         <div class="card-body">
                             <h5 class="card-title"><%= product.name %></h5>
                             <p class="card-text"><%= product.description %></p>
-                            
-                            <!-- Giá gốc, gạch ngang nếu có khuyến mãi -->
                             <% if (product.discountPercentage > 0) { %>
-                                <p class="card-text">
-                                    Giá: <s><%= product.price %> VND</s>
-                                </p>
-                                <p class="card-text text-danger">Giá sau khuyến mãi: <%= product.price * (1 - product.discountPercentage / 100) %> VND</p>
+                                <p>Giá: <s><%= product.price.toLocaleString() %> VND</s></p>
+                                <p>Giá khuyến mãi: <%= (product.price * (1 - product.discountPercentage / 100)).toLocaleString() %> VND</p>
                             <% } else { %>
-                                <p class="card-text">Giá: <%= product.price %> VND</p>
+                                <p>Giá: <%= product.price.toLocaleString() %> VND</p>
                             <% } %>
-            
-                            <p class="card-text"><%= product.promotionDescription %></p>
-                            <p class="card-text">Số lượng: <%= product.stock %></p>
-                            <p class="card-text"><strong>Danh mục: </strong><%= product.category %></p>
-            
-                            <!-- Form thêm số lượng vào kho -->
-                            <form action="/products/<%= product._id %>/add-stock" method="POST" class="d-inline">
-                                <div class="mb-3">
-                                    <input type="number" name="stock" class="form-control" placeholder="Số lượng thêm" required>
-                                </div>
-                                <button type="submit" class="btn btn-success">Thêm vào kho</button>
+                            <p>Số lượng: <%= product.stock %></p>
+                            <p>Danh mục: <%= product.category %></p>
+
+                            <form action="/products/<%= product._id %>/delete" method="POST" class="d-inline delete-form">
+                                <button type="button" class="btn btn-danger delete-btn">Xóa sản phẩm</button>
                             </form>
-            
-                            <!-- Nút Xóa sản phẩm -->
-                            <form action="/products/<%= product._id %>/delete" method="POST" class="d-inline">
-                                <button type="submit" class="btn btn-danger">Xóa sản phẩm</button>
-                            </form>
-            
-                            <!-- Nút sửa sản phẩm -->
                             <a href="/products/<%= product._id %>/edit" class="btn btn-warning">Sửa sản phẩm</a>
                         </div>
                     </div>
                 </div>
-            <% }) %>            
+            <% }) %>
         </div>
     </div>
 
-    <!-- Thêm JavaScript của Bootstrap 5 -->
-    <script src="assets/bs5/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.3/sweetalert2.min.js"></script>
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('form');
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn xóa sản phẩm này?',
+                    text: 'Hành động này không thể hoàn tác!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy',
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
