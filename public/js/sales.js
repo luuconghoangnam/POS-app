@@ -232,27 +232,20 @@ $('#confirmBankTransfer').on('click', function () {
 });
 
 function printBill(paymentMethod) {
-    // Fetch user information from /user-info API
     $.ajax({
-        url: '/user-info',
+        url: '/store-info',
         method: 'GET',
-        success: function(response) {
-            const user = response.user;
+        success: function (response) {
+            const { storeName, storeAddress } = response;
 
-            // Use fetched user information, defaulting to placeholders if the data is missing
-            const storeName = user.storeName || 'Cửa Hàng XYZ';
-            const storeAddress = user.storeAddress || 'Địa chỉ chưa có';
-            const phoneNumber = user.phone || 'Số điện thoại chưa có';
-
-            // Generate bill content using user information and selected payment method
+            // Nội dung hóa đơn
             const billContent = `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd;">
                     <h1 style="text-align: center; color: #4CAF50;">HÓA ĐƠN THANH TOÁN</h1>
                     <hr>
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <h3>Cửa hàng: ${storeName}</h3>
-                        <p>Địa chỉ: ${storeAddress}</p>
-                        <p>Điện thoại: ${phoneNumber}</p>
+                        <h3>Cửa hàng: ${storeName || 'Tên cửa hàng chưa được thiết lập'}</h3>
+                        <p>Địa chỉ: ${storeAddress || 'Địa chỉ chưa được thiết lập'}</p>
                     </div>
                     <hr>
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
@@ -283,13 +276,13 @@ function printBill(paymentMethod) {
                         <p><strong>Phương thức thanh toán:</strong> ${paymentMethod === 'cash' ? 'Tiền mặt' : 'Chuyển khoản'}</p>
                     </div>
                     <div style="text-align: center;">
-                        <p>Cảm ơn bạn đã mua sắm tại ${storeName}!</p>
+                        <p>Cảm ơn bạn đã mua sắm tại ${storeName || 'Cửa hàng'}!</p>
                         <p>Ngày xuất hóa đơn: ${new Date().toLocaleDateString()}</p>
                     </div>
                 </div>
             `;
 
-            // Open the bill content in a new window for printing
+            // Hiển thị hóa đơn trong cửa sổ in
             const printWindow = window.open('', '', 'height=800,width=1200');
             printWindow.document.write('<html><head><title>In hóa đơn</title><style>');
             printWindow.document.write(`
@@ -306,7 +299,7 @@ function printBill(paymentMethod) {
             printWindow.document.close();
             printWindow.print();
         },
-        error: function(xhr) {
+        error: function (xhr) {
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi',
