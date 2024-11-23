@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <!-- Thêm Bootstrap 5 -->
+    <title>Quản lý kho</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <script src="/assets/swal2/swal2.js"></script>
+
     <style>
         .discount-label {
             border-radius: 0 10px 0 10px;
@@ -15,105 +16,395 @@
         }
     </style>
 </head>
+
 <body>
-    <a href="/dashboard" class="back-to-dashboard">
-        <img src="/icons/bx-log-out.svg">
-    </a>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Quản lý kho</h1>
 
-        <!-- Form thêm mới sản phẩm -->
-        <% if (categories.length > 0) { %>
-            <h2>Thêm sản phẩm mới</h2>
-            <form action="/products/new" method="POST" enctype="multipart/form-data" class="mb-4">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Tên sản phẩm:</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Mô tả sản phẩm:</label>
-                    <textarea id="description" name="description" class="form-control"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="price" class="form-label">Giá:</label>
-                    <input type="number" id="price" name="price" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="stock" class="form-label">Số lượng:</label>
-                    <input type="number" id="stock" name="stock" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Hình ảnh sản phẩm:</label>
-                    <input type="file" id="image" name="image" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="category" class="form-label">Danh mục:</label>
-                    <select id="category" name="category" class="form-select" required>
-                        <% categories.forEach(category => { %>
-                            <option value="<%= category.name %>"><%= category.name %></option>
-                        <% }) %>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="discountPercentage" class="form-label">Phần trăm giảm giá (%):</label>
-                    <input type="number" id="discountPercentage" name="discountPercentage" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
-            </form>
-        <% } else { %>
-            <div class="alert alert-warning text-center">
-                Không có danh mục nào. Vui lòng thêm danh mục trước khi thêm sản phẩm.
-            </div>
-        <% } %>
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs" id="inventoryTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="import-tab" data-bs-toggle="tab" data-bs-target="#import"
+                    type="button" role="tab">Nhập kho</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export" type="button"
+                    role="tab">Xuất kho</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button"
+                    role="tab">Danh sách sản phẩm</button>
+            </li>
+        </ul>
 
-        <!-- Form thêm danh mục -->
-        <h2>Thêm danh mục mới</h2>
-        <form action="/categories/new" method="POST" class="mb-4">
-            <div class="mb-3">
-                <label for="category" class="form-label">Tên danh mục mới:</label>
-                <input type="text" id="category" name="category" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-secondary">Thêm danh mục</button>
-        </form>
+        <!-- Tabs Content -->
+        <div class="tab-content" id="inventoryTabsContent">
 
-        <!-- Danh sách sản phẩm hiện tại trong kho -->
-        <h2>Danh sách sản phẩm</h2>
-        <div class="row">
-            <% products.forEach(product => { %>
-                <div class="col-md-4 mb-4">
-                    <div class="card position-relative">
-                        <% if (product.discountPercentage > 0) { %>
-                            <div class="discount-label bg-danger text-white position-absolute top-0 end-0">
-                                -<%= product.discountPercentage %>%
-                            </div>
-                        <% } %>
-                        <img src="<%= product.imageUrl %>" class="card-img-top" alt="Hình ảnh sản phẩm">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= product.name %></h5>
-                            <p class="card-text"><%= product.description %></p>
-                            <% if (product.discountPercentage > 0) { %>
-                                <p>Giá: <s><%= product.price.toLocaleString() %> VND</s></p>
-                                <p>Giá khuyến mãi: <%= (product.price * (1 - product.discountPercentage / 100)).toLocaleString() %> VND</p>
-                            <% } else { %>
-                                <p>Giá: <%= product.price.toLocaleString() %> VND</p>
-                            <% } %>
-                            <p>Số lượng: <%= product.stock %></p>
-                            <p>Danh mục: <%= product.category %></p>
-
-                            <form action="/products/<%= product._id %>/delete" method="POST" class="d-inline delete-form">
-                                <button type="button" class="btn btn-danger delete-btn">Xóa sản phẩm</button>
-                            </form>
-                            <a href="/products/<%= product._id %>/edit" class="btn btn-warning">Sửa sản phẩm</a>
+            <!-- Nhập kho -->
+            <div class="tab-pane fade show active" id="import" role="tabpanel" aria-labelledby="import-tab">
+                <div class="mt-4">
+            
+                    <!-- Form thêm danh mục -->
+                    <h2>Thêm danh mục mới</h2>
+                    <form action="/categories/new" method="POST" class="mb-4">
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Tên danh mục mới:</label>
+                            <input type="text" id="category" name="category" class="form-control" required>
                         </div>
+                        <button type="submit" class="btn btn-secondary">Thêm danh mục</button>
+                    </form>
+            
+                    <% if (categories.length > 0) { %>
+            
+                        <!-- Form nhập sản phẩm bằng Excel -->
+                        <h2>Nhập sản phẩm bằng Excel</h2>
+                        <form action="/products/import-excel" method="POST" enctype="multipart/form-data" class="mb-4">
+                            <div class="mb-3">
+                                <label for="excelFile" class="form-label">Tải lên file Excel:</label>
+                                <input type="file" id="excelFile" name="excelFile" class="form-control" accept=".xlsx, .xls" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Nhập sản phẩm</button>
+                        </form>
+            
+                        <!-- Nút tải file mẫu Excel -->
+                        <div class="mb-4">
+                            <a href="/templates/product-sample.xlsx" class="btn btn-secondary">Tải file mẫu Excel</a>
+                        </div>
+            
+                        <!-- Lưu ý hướng dẫn -->
+                        <div class="alert alert-info">
+                            <h5>Lưu ý khi nhập Excel:</h5>
+                            <ul>
+                                <li>Các cột bắt buộc: <b>Tên sản phẩm</b>, <b>Giá</b>, <b>Số lượng</b>, <b>Danh mục</b>.</li>
+                                <li>Nếu không có danh mục, sản phẩm sẽ tự động được gán vào danh mục <b>Tất cả</b>.</li>
+                                <li>Định dạng file: <b>.xlsx</b> hoặc <b>.xls</b>.</li>
+                                <li>Sử dụng file mẫu để đảm bảo đúng định dạng.</li>
+                            </ul>
+                        </div>
+            
+                        <!-- Form nhập sản phẩm thủ công -->
+                        <h2>Thêm sản phẩm mới</h2>
+                        <form action="/products/new" method="POST" enctype="multipart/form-data" class="mb-4">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Tên sản phẩm:</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Mô tả sản phẩm:</label>
+                                <textarea id="description" name="description" class="form-control"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Giá:</label>
+                                <input type="number" id="price" name="price" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="stock" class="form-label">Số lượng:</label>
+                                <input type="number" id="stock" name="stock" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Hình ảnh sản phẩm:</label>
+                                <input type="file" id="image" name="image" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Danh mục:</label>
+                                <select id="category" name="category" class="form-select" required>
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="discountPercentage" class="form-label">Phần trăm giảm giá (%):</label>
+                                <input type="number" id="discountPercentage" name="discountPercentage" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                        </form>
+            
+                    <% } else { %>
+                        <div class="alert alert-warning text-center">
+                            Không có danh mục nào. Vui lòng thêm danh mục trước khi thêm sản phẩm.
+                        </div>
+                    <% } %>
+            
+                </div>
+            </div>
+
+            <!-- Xuất kho -->
+            <div class="tab-pane fade" id="export" role="tabpanel" aria-labelledby="export-tab">
+                <div class="mt-4">
+                    <h3>Xuất kho</h3>
+                    <form id="exportForm">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng hiện tại</th>
+                                    <th>Số lượng xuất</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% products.forEach(product=> { %>
+                                    <tr>
+                                        <td><input type="checkbox" name="selectedProducts" value="<%= product._id %>">
+                                        </td>
+                                        <td>
+                                            <%= product.name %>
+                                        </td>
+                                        <td>
+                                            <%= product.stock %>
+                                        </td>
+                                        <td><input type="number" name="quantity_<%= product._id %>" class="form-control"
+                                                placeholder="Nhập số lượng xuất"></td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-danger" id="exportButton">Xuất kho</button>
+                    </form>
+                    <div id="exportReceipt" class="mt-4"></div>
+
+                    <h4 class="mt-5">Lịch sử hóa đơn xuất kho</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Mã hóa đơn</th>
+                                <th>Ngày</th>
+                                <th>Tổng số lượng</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% exportHistories.forEach(history=> { %>
+                                <tr>
+                                    <td>
+                                        <%= history._id %>
+                                    </td>
+                                    <td>
+                                        <%= new Date(history.date).toLocaleString() %>
+                                    </td>
+                                    <td>
+                                        <%= history.totalQuantity %>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm print-btn" data-id="<%= history._id %>">In
+                                            hóa đơn</button>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Danh sách sản phẩm -->
+            <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+                <div class="mt-4">
+                    <h2>Danh sách sản phẩm</h2>
+                    <div class="row">
+                        <% products.forEach(product=> { %>
+                            <div class="col-md-4 mb-4">
+                                <div class="card position-relative">
+                                    <% if (product.discountPercentage> 0) { %>
+                                        <div class="discount-label bg-danger text-white position-absolute top-0 end-0">
+                                            -<%= product.discountPercentage %>%
+                                        </div>
+                                        <% } %>
+                                            <img src="<%= product.imageUrl %>" class="card-img-top"
+                                                alt="Hình ảnh sản phẩm">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <%= product.name %>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <%= product.description %>
+                                                </p>
+                                                <% if (product.discountPercentage> 0) { %>
+                                                    <p>Giá: <s>
+                                                            <%= product.price.toLocaleString() %> VND
+                                                        </s></p>
+                                                    <p>Giá khuyến mãi: <%= (product.price * (1 -
+                                                            product.discountPercentage / 100)).toLocaleString() %> VND
+                                                    </p>
+                                                    <% } else { %>
+                                                        <p>Giá: <%= product.price.toLocaleString() %> VND</p>
+                                                        <% } %>
+                                                            <p>Số lượng: <%= product.stock %>
+                                                            </p>
+                                                            <p>Danh mục: <%= product.category %>
+                                                            </p>
+
+                                                            <form action="/products/<%= product._id %>/delete"
+                                                                method="POST" class="d-inline delete-form">
+                                                                <button type="button"
+                                                                    class="btn btn-danger delete-btn">Xóa sản
+                                                                    phẩm</button>
+                                                            </form>
+                                                            <a href="/products/<%= product._id %>/edit"
+                                                                class="btn btn-warning">Sửa sản phẩm</a>
+                                            </div>
+                                </div>
+                            </div>
+                            <% }) %>
                     </div>
                 </div>
-            <% }) %>
+            </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.3/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lưu trạng thái tab
+            const tabs = document.querySelectorAll('.nav-link');
+            const savedTab = localStorage.getItem('activeTab');
+
+            if (savedTab) {
+                const activeTab = document.querySelector(`#${savedTab}`);
+                const activeContent = document.querySelector(activeTab.dataset.bsTarget);
+                tabs.forEach(tab => tab.classList.remove('active'));
+                activeTab.classList.add('active');
+                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+                activeContent.classList.add('show', 'active');
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    localStorage.setItem('activeTab', tab.id);
+                });
+            });
+
+            // Xuất kho logic
+            $('#exportButton').on('click', function () {
+                const selectedProducts = [];
+                $('#exportForm input[name="selectedProducts"]:checked').each(function () {
+                    const id = $(this).val();
+                    const quantity = $(`#exportForm input[name="quantity_${id}"]`).val();
+                    if (quantity > 0) {
+                        selectedProducts.push({ id, quantity });
+                    }
+                });
+
+                if (selectedProducts.length === 0) {
+                    alert('Vui lòng chọn sản phẩm và nhập số lượng xuất.');
+                    return;
+                }
+
+                // Gửi yêu cầu xuất kho
+                $.post('/products/export', { products: selectedProducts }, function (data) {
+                    // Hiển thị hóa đơn xuất kho
+                    $('#exportReceipt').html(`
+            <h4>Hóa đơn xuất kho</h4>
+            <p>Mã hóa đơn: ${data.receiptId}</p>
+            <p>Ngày: ${new Date(data.date).toLocaleString()}</p>
+            <p>Tổng số lượng xuất: ${data.totalQuantity}</p>
+            <button id="printInvoiceButton" class="btn btn-primary mt-2">In hóa đơn</button>
+        `);
+
+                    // Tạo sự kiện in hóa đơn ngay sau khi xuất
+                    $('#printInvoiceButton').on('click', function () {
+                        // Lấy thông tin hóa đơn để in
+                        $.get(`/export-history/${data.receiptId}`, function (invoiceData) {
+                            const printWindow = window.open('', '', 'width=800,height=600');
+                            printWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>Hóa đơn xuất kho</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; }
+                            table { width: 100%; border-collapse: collapse; }
+                            th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Hóa đơn xuất kho</h1>
+                        <p>Mã hóa đơn: ${invoiceData._id}</p>
+                        <p>Ngày: ${new Date(invoiceData.date).toLocaleString()}</p>
+                        <p>Tổng số lượng xuất: ${invoiceData.totalQuantity}</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Tổng cộng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${invoiceData.products.map(product => `
+                                    <tr>
+                                        <td>${product.productName}</td>
+                                        <td>${product.quantity}</td>
+                                        <td>${product.price.toLocaleString()} VND</td>
+                                        <td>${product.total.toLocaleString()} VND</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </body>
+                    </html>
+                `);
+                            printWindow.document.close();
+                            printWindow.print();
+                        }).fail(() => alert('Không thể tải hóa đơn!'));
+                    });
+                }).fail(function () {
+                    alert('Xuất kho thất bại!');
+                });
+            });
+
+            // In hóa đơn
+            document.querySelectorAll('.print-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const receiptId = this.dataset.id;
+                    $.get(`/export-history/${receiptId}`, function (data) {
+                        const printWindow = window.open('', '', 'width=800,height=600');
+                        printWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>Hóa đơn xuất kho</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; }
+                            table { width: 100%; border-collapse: collapse; }
+                            th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Hóa đơn xuất kho</h1>
+                        <p>Mã hóa đơn: ${data._id}</p>
+                        <p>Ngày: ${new Date(data.date).toLocaleString()}</p>
+                        <p>Tổng số lượng xuất: ${data.totalQuantity}</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Tổng cộng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.products.map(product => `
+                                    <tr>
+                                        <td>${product.productName}</td>
+                                        <td>${product.quantity}</td>
+                                        <td>${product.price.toLocaleString()} VND</td>
+                                        <td>${product.total.toLocaleString()} VND</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </body>
+                    </html>
+                `);
+                        printWindow.document.close();
+                        printWindow.print();
+                    }).fail(() => alert('Không thể tải hóa đơn!'));
+                });
+            });
+        });
+
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function () {
                 const form = this.closest('form');
@@ -133,4 +424,5 @@
         });
     </script>
 </body>
+
 </html>
