@@ -40,7 +40,10 @@
                             <%= user.email %>
                         </td>
                         <td>
-                            <%= user.role %>
+                            <select class="form-select role-selector" data-id="<%= user._id %>">
+                                <option value="user" <%=user.role==='user' ? 'selected' : '' %>>Người dùng</option>
+                                <option value="admin" <%=user.role==='admin' ? 'selected' : '' %>>Quản trị viên</option>
+                            </select>
                         </td>
                         <td>
                             <%= user.phone || 'N/A' %>
@@ -50,12 +53,6 @@
                         </td>
                         <td>
                             <%= user.city || 'N/A' %>
-                        </td>
-                        <td>
-                            <select class="form-select role-selector" data-id="<%= user._id %>">
-                                <option value="user" <%=user.role==='user' ? 'selected' : '' %>>Người dùng</option>
-                                <option value="admin" <%=user.role==='admin' ? 'selected' : '' %>>Quản trị viên</option>
-                            </select>
                         </td>
                         <td>
                             <div>

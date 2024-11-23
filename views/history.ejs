@@ -56,9 +56,11 @@
                                 <td>
                                     <ul>
                                         <% order.products.forEach(product => { %>
-                                            <li><%= product.productId.name %></li>
+                                            <li>
+                                                <%= product.productId && product.productId.name ? product.productId.name : 'Sản phẩm đã bị xóa' %>
+                                            </li>
                                         <% }) %>
-                                    </ul>
+                                    </ul>                                    
                                 </td>                                
                                 <td>
                                     <ul>
