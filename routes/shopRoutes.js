@@ -100,4 +100,22 @@ router.post('/shop', isAuthenticated, canUpdateStore, upload.single('qrCodeImage
     }
 });
 
+router.get('/store-info', async (req, res) => {
+    try {
+        const store = await Store.findOne();
+
+        if (!store) {
+            return res.status(404).json({ message: 'Thông tin cửa hàng không tồn tại' });
+        }
+
+        res.json({
+            storeName: store.storeName,
+            storeAddress: store.storeAddress
+        });
+    } catch (error) {
+        console.error('Error fetching store info:', error);
+        res.status(500).json({ message: 'Lỗi server' });
+    }
+});
+
 module.exports = router;

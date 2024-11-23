@@ -328,7 +328,30 @@ router.post('/send-verification-email', async (req, res) => {
             from: process.env.EMAIL_USER,
             to: email,
             subject: 'Mã xác thực tài khoản',
-            text: `Mã xác thực của bạn là: ${verificationCode}. Mã này sẽ hết hạn sau 5 phút.`
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
+                    <h1 style="text-align: center; color: #4CAF50; margin-bottom: 20px;">Mã xác thực tài khoản</h1>
+                    <p style="font-size: 16px; color: #333;">
+                        Chào bạn,</p>
+                    <p style="font-size: 16px; color: #333;">
+                        Cảm ơn bạn đã đăng ký tài khoản. Dưới đây là mã xác thực của bạn:
+                    </p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <span style="font-size: 24px; font-weight: bold; color: #4CAF50; border: 2px dashed #4CAF50; padding: 10px 20px; border-radius: 5px;">${verificationCode}</span>
+                    </div>
+                    <p style="font-size: 16px; color: #333;">
+                        Lưu ý: Mã xác thực này chỉ có hiệu lực trong vòng <strong>5 phút</strong>.
+                    </p>
+                    <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+                    <p style="font-size: 14px; color: #999; text-align: center;">
+                        Nếu bạn không yêu cầu xác thực tài khoản, vui lòng bỏ qua email này.
+                    </p>
+                    <p style="font-size: 14px; color: #999; text-align: center;">
+                        Trân trọng,<br>
+                        <strong>Đội ngũ Hỗ trợ</strong>
+                    </p>
+                </div>
+            `
         };
         // Gửi email
         await transporter.sendMail(mailOptions);
@@ -423,14 +446,34 @@ router.post('/forgot-password', async (req, res) => {
             to: user.email,
             subject: 'Đặt lại mật khẩu',
             html: `
-                <p>Xin chào ${user.username},</p>
-                <p>Bạn đã yêu cầu đặt lại mật khẩu. Vui lòng nhấn vào liên kết bên dưới để đặt lại mật khẩu của bạn:</p>
-                <a href="${resetUrl}">Đặt lại mật khẩu</a>
-                <p>Nếu bạn không yêu cầu điều này, hãy bỏ qua email này.</p>
-                <p>Thân mến,</p>
-                <p>Đội ngũ hỗ trợ</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
+                    <h2 style="text-align: center; color: #4CAF50; margin-bottom: 20px;">Đặt lại mật khẩu</h2>
+                    <p style="font-size: 16px; color: #333;">Xin chào <strong>${user.username}</strong>,</p>
+                    <p style="font-size: 16px; color: #333;">
+                        Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Vui lòng nhấn vào nút bên dưới để đặt lại mật khẩu:
+                    </p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <a href="${resetUrl}" style="
+                            display: inline-block;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            color: #fff;
+                            background-color: #4CAF50;
+                            text-decoration: none;
+                            border-radius: 5px;
+                        ">Đặt lại mật khẩu</a>
+                    </div>
+                    <p style="font-size: 16px; color: #333;">
+                        Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này. Mật khẩu của bạn sẽ không bị thay đổi nếu bạn không thực hiện thao tác nào.
+                    </p>
+                    <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+                    <p style="font-size: 14px; color: #999; text-align: center;">
+                        Trân trọng,<br>
+                        <strong>Đội ngũ hỗ trợ</strong>
+                    </p>
+                </div>
             `,
-        };
+        };        
 
         await transporter.sendMail(mailOptions);
 
