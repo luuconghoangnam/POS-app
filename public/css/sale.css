@@ -1,0 +1,55 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    height: 150px;
+    object-fit: cover;
+}
+
+.cart {
+    border: 1px solid #ddd;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#cart-items {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.card.out-of-stock {
+    border: 2px solid red;
+    position: relative;
+}
+
+.card.out-of-stock .card-img-top {
+    opacity: 0.6;
+}
+
+.card.out-of-stock .card-body {
+    position: relative;
+}
+
+.card.out-of-stock .out-of-stock-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}

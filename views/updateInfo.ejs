@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User Information</title>
+    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
+    <script src="/assets/jquery/jquery.js"></script>
+    <script src="/assets/swal2/swal2.js"></script>
+</head>
+
+<body>
+    <link rel="stylesheet" href="/css/style.css">
+    <a href="/dashboard" class="back-to-dashboard">
+        <img src="/icons/bx-log-out.svg">
+    </a>
+    <div class="container mt-5">
+        <h2>Cập nhật thông tin người dùng</h2>
+
+        <form id="update-info-form">
+            <!-- Vai trò -->
+            <div class="mb-3">
+                <label for="role" class="form-label">Vai trò</label>
+                <input type="text" class="form-control" id="role" name="role" value="<%= user.role %>" disabled
+                    readonly>
+            </div>
+
+            <!-- Tên đăng nhập (Không chỉnh sửa) -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>"
+                    disabled readonly>
+            </div>
+
+            <!-- Email (Không chỉnh sửa) -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" disabled
+                    readonly>
+            </div>
+
+            <!-- Số điện thoại -->
+            <div class="mb-3">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input type="text" class="form-control" id="phone" name="phone" value="<%= user.phone %>">
+            </div>
+
+            <!-- Tỉnh/Thành phố -->
+            <div class="mb-3">
+                <label for="city" class="form-label">Tỉnh/TP</label>
+                <input type="text" class="form-control" id="city" name="city" value="<%= user.city %>">
+            </div>
+
+            <!-- Quốc gia -->
+            <div class="mb-3">
+                <label for="country" class="form-label">Quốc gia</label>
+                <input type="text" class="form-control" id="country" name="country" value="<%= user.country %>">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#update-info-form').on('submit', function (e) {
+                e.preventDefault();
+
+                const phone = $('#phone').val();
+                const city = $('#city').val();
+                const country = $('#country').val();
+
+                // Validate phone number
+                if (phone && (!/^\d{10}$/.test(phone))) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Số điện thoại phải có đúng 10 chữ số!',
+                    });
+                    return;
+                }
+
+                // Submit form via AJAX
+                $.ajax({
+                    url: '/update-info',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ phone, city, country }),
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: response.message,
+                        }).then(() => {
+                            window.location.href = '/dashboard';
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: xhr.responseJSON ? xhr.responseJSON.message : 'Lỗi không xác định xảy ra',
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

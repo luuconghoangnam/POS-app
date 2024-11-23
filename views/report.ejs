@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê</title>
+    <!-- Thêm Bootstrap 5 và Chart.js -->
+    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/stats.css">
+    <script src="/assets/chartJS/chart.js"></script>
+    
+</head>
+
+<body>
+    <link rel="stylesheet" href="/css/style.css">
+    <a href="/dashboard" class="back-to-dashboard">
+        <img src="/icons/bx-log-out.svg">
+    </a>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Thống kê cửa hàng</h2>
+
+        <!-- Sản phẩm bán chạy nhất -->
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="text-primary">Sản phẩm bán chạy nhất</h3>
+                <ul class="list-group">
+                    <% bestSellingProducts.forEach(product => { %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <%= product.name %>
+                            <span class="badge bg-success rounded-pill">
+                                <%= product.sold %> đã bán
+                            </span>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+
+            <!-- Sản phẩm sắp hết hàng -->
+            <div class="col-md-6">
+                <h3 class="text-warning">Sản phẩm sắp hết hàng</h3>
+                <ul class="list-group">
+                    <% lowStockProducts.forEach(product => { %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <%= product.name %>
+                            <span class="badge bg-danger rounded-pill">
+                                <%= product.stock %> còn lại
+                            </span>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Biểu đồ doanh thu theo ngày -->
+        <div class="mt-5">
+            <h3 class="text-info">Doanh thu theo ngày</h3>
+            <canvas id="dailyRevenueChart"></canvas>
+        </div>
+
+        <!-- Biểu đồ doanh thu theo tháng -->
+        <div class="mt-5">
+            <h3 class="text-info">Doanh thu theo tháng</h3>
+            <canvas id="monthlyRevenueChart"></canvas>
+        </div>
+
+        <!-- Biểu đồ doanh thu theo năm -->
+        <div class="mt-5">
+            <h3 class="text-info">Doanh thu theo năm</h3>
+            <canvas id="yearlyRevenueChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Thêm JS (Bootstrap và Chart.js) -->
+    <script src="/assets/jquery/jquery.js"></script>
+    <script src="/assets/bs5/bootstrap.bundle.min.js"></script>
+
+    <!-- Nhúng tệp report.js -->
+    <script src="/js/report.js"></script>
+</body>
+
+</html>

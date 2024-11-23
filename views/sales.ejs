@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bán hàng</title>
+    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/sale.css">
+    <script src="/assets/swal2/swal2.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar bên trái chứa các danh mục -->
+            <div class="col-md-2">
+                <div class="list-group">
+                    <a href="/dashboard" class="list-group-item list-group-item-action"
+                    style="background-color: #333; color: #fff;">Về trang tổng quan</a>
+                    <a href="/sales"
+                        class="list-group-item list-group-item-action <%= selectedCategory === 'Tất cả' ? 'active' : '' %>">Tất
+                        cả</a>
+                    <% categories.forEach(category => { %>
+                        <a href="/sales?category=<%= category.name %>"
+                            class="list-group-item list-group-item-action <%= selectedCategory === category.name ? 'active' : '' %>">
+                            <%= category.name %>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+
+            <!-- Phần sản phẩm ở giữa -->
+            <div class="col-md-7">
+                <!-- Input để tìm kiếm sản phẩm theo tên -->
+                <div class="mb-3">
+                    <input type="text" id="search-input" class="form-control" placeholder="Tìm kiếm sản phẩm theo tên">
+                </div>
+
+                <div class="row" id="product-list">
+                    <% products.forEach(product => { %>
+                        <div class="col-md-3 mb-4 product-item">
+                            <div class="card">
+                                <% if (product.stock === 0) { %>
+                                    <div class="card-body border border-danger p-2" style="position: relative;">
+                                        <span class="badge bg-danger"
+                                            style="position: absolute; top: 10px; right: 10px;">Hết hàng</span>
+                                        <img src="<%= product.imageUrl %>" class="card-img-top" alt="Product Image">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">
+                                                <%= product.name %>
+                                            </h6>
+                                            <p class="card-text">
+                                                <%= product.price %>đ
+                                            </p>
+                                            <p class="card-text text-danger">Số lượng còn: 0</p>
+                                            <button class="btn btn-secondary disabled">Hết hàng</button>
+                                        </div>
+                                    </div>
+                                <% } else { %>
+                                    <div class="card-body">
+                                        <% if (product.discountPercentage > 0) { %>
+                                            <div class="discount-label bg-danger text-white p-1 position-absolute top-0 end-0">
+                                                -<%= product.discountPercentage %>%</div>
+                                        <% } %>
+                                        <img src="<%= product.imageUrl %>" class="card-img-top" alt="Product Image">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">
+                                                <%= product.name %>
+                                            </h6>
+                                            <% if (product.discountPercentage > 0) { %>
+                                                <s class="card-text"><%= product.price %>đ</s>
+                                                <p class="card-text text-danger">
+                                                    <%= product.price * (1 - product.discountPercentage / 100) %>đ
+                                                </p>
+                                            <% } else { %>
+                                                <p class="card-text">
+                                                    <%= product.price %>đ
+                                                </p>
+                                                <br>
+                                            <% } %>
+                                            <p class="card-text">Số lượng còn: <%= product.stock %></p>
+                                            <button class="btn btn-primary add-to-cart" data-id="<%= product._id %>">Thêm vào giỏ</button>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+
+            <!-- Phần giỏ hàng bên phải -->
+            <div class="col-md-3">
+                <div class="cart">
+                    <h5>Giỏ hàng</h5>
+                    <ul class="list-group" id="cart-items">
+                        <!-- Các sản phẩm trong giỏ hàng sẽ được thêm động -->
+                    </ul>
+                    <div class="mt-3">
+                        <p>Tạm tính: <span id="subtotal">0đ</span></p>
+                        <p>Thuế hóa đơn: <span id="tax">0đ</span></p>
+                        <p>Chiết khấu: <span id="discount">0%</span></p>
+                        <h5>Tổng cộng: <span id="total">0đ</span></h5>
+                        <button id="checkout-btn" class="btn btn-success w-100">Thanh toán</button>
+
+                        <!-- Modal for Payment -->
+                        <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="checkoutModalLabel">Phương thức thanh toán</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6>Chọn phương thức thanh toán:</h6>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentMethod"
+                                                id="bankTransfer" value="bank">
+                                            <label class="form-check-label" for="bankTransfer">Chuyển khoản ngân hàng</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentMethod"
+                                                id="cashPayment" value="cash">
+                                            <label class="form-check-label" for="cashPayment">Thanh toán tiền mặt</label>
+                                        </div>
+
+                                        <!-- Bank transfer section -->
+                                        <div id="bankTransferDetails" style="display: none;">
+                                            <h6 class="mt-3">Quét mã QR để thanh toán:</h6>
+                                            <% if (store.qrCodeImageUrl) { %>
+                                                <img src="<%= store.qrCodeImageUrl %>" alt="QR Code" class="img-fluid">
+                                            <% } else { %>
+                                                <p>Chưa có mã QR</p>
+                                            <% } %>
+                                            <h6 class="mt-3">Thông tin tài khoản ngân hàng:</h6>
+                                            <p>Ngân hàng: <%= store.bankName || 'Chưa có' %></p>
+                                            <p>Số tài khoản: <%= store.bankAccountNumber || 'Chưa có' %></p>
+                                            <button id="confirmBankTransfer" class="btn btn-primary mt-3">Xác nhận đã thanh toán</button>
+                                        </div>
+
+                                        <!-- Cash payment section -->
+                                        <div id="cashPaymentDetails" style="display: none;">
+                                            <h6 class="mt-3">Xác nhận thanh toán tiền mặt</h6>
+                                            <button id="confirmCashPayment" class="btn btn-primary">Xác nhận đã thanh toán</button>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm JS (Bootstrap và jQuery) -->
+    <script src="/assets/jquery/jquery.js"></script>
+    <script src="/assets/bs5/bootstrap.bundle.min.js"></script>
+    <script src="/js/sales.js"></script>
+</body>
+
+</html>

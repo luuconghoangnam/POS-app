@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet"> <!-- Link to Bootstrap CSS -->
+    <script src="/assets/swal2/swal2.js"></script> <!-- Link to SweetAlert2 -->
+    <script src="/assets/jquery/jquery.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 400px;
+            margin-top: 50px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4CAF50;
+        }
+
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        p a {
+            color: #4CAF50;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Đăng nhập</h1>
+
+        <!-- Form đăng nhập bằng username -->
+        <form id="login-form" action="/login" method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập *</label>
+                <input type="text" class="form-control" id="username" name="username" required placeholder="Nhập tên đăng nhập của bạn">
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu *</label>
+                <input type="password" class="form-control" id="password" name="password" required placeholder="Nhập mật khẩu">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+        </form>
+
+        <p>Chưa có tài khoản? <a href="/register">Đăng ký</a></p>
+        <p><a href="/forgot-password">Tìm lại mật khẩu</a></p>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault(); // Ngăn form submit tự động để kiểm tra trước
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.',
+                });
+                return;
+            }
+
+            // AJAX request to login
+            $.ajax({
+                url: '/login', // Route xử lý đăng nhập
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    username: username,
+                    password: password
+                }),
+                success: function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: 'Đăng nhập thành công!',
+                    }).then(() => {
+                        window.location.href = '/dashboard'; // Điều hướng sau khi đăng nhập thành công
+                    });
+                },
+                error: function (xhr) {
+                    let errorMessage = 'Đã xảy ra lỗi. Vui lòng thử lại.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi đăng nhập',
+                        text: errorMessage,
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

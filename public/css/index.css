@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+
+* {
+    font-family: 'roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#main-image {
+    height: 100%;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    display: block;
+}
+
+@media (min-width: 1365px) {
+    #main-image {
+        width: 100%;
+    }
+}
+
+.black-filter {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    width: 100%;
+    height: auto;
+    background: transparent;
+    padding-left: 300px;
+    padding-right: 300px;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 99999;
+    background-color: transparent;
+    display: flex;
+    padding-left: 30px;
+    padding-right: 30px;
+    align-items: center;
+    color: #fff;
+}
+
+#header i {
+    font-size: 35px;
+}
+
+#header #app-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 35px;
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+#header #play {
+    border-radius: 50px;
+    width: 120px;
+    height: 42px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    margin-left: auto;
+    cursor: pointer;
+    background-color: transparent;
+    color: #fff;
+}
+
+#header #play:hover {
+    text-decoration: underline;
+}
+
+#text-span {
+    display: inline-block;
+    color: #0004ff;
+    cursor: default;
+    font-size: 70px;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.4);
+    font-weight: 700;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.testimonial {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    overflow: hidden;
+}
+
+.testimonial-name {
+    display: block;
+    font-weight: 600;
+    font-size: 20px;
+    max-width: calc(100% - 50px);
+}
+
+.testimonial-line {
+    width: calc(100% - 50px);
+    height: 1px;
+    margin-top: 8px;
+    background: #d4d8de;
+}
+
+.testimonial-content {
+    margin-top: 8px;
+    display: block;
+    font-weight: 400;
+    font-size: 17px;
+}
+
+.icon-quote-right {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+
+.swiper-container {
+    width: 100%;
+    height: auto;
+    margin-top: 50px;
+    overflow: hidden;
+}
+
+.swiper-slide {
+    display: block;
+    font-size: 18px;
+    color: #000;
+    background: #fff;
+    border: 1px solid #d4d8de;
+    border-radius: 10px;
+    padding: 20px;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+    position: relative;
+}
+
+.swiper-slide-active {
+    opacity: 1;
+}
+
+#intro-text {
+    display: block;
+    margin-top: 50px;
+    color: rgb(80, 89, 101);
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.line {
+    display: block;
+    background-color: rgb(80, 89, 101);
+    width: 100%;
+    height: 1px;
+    margin-top: 20px;
+}
+
+.copyright {
+    width: 100%;
+    display: block;
+    margin-top: 20px;
+    color: rgb(80, 89, 101);
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+}
+
+@media (max-width: 1440px) {
+    .content {
+        padding-left: 150px;
+        padding-right: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    #header {
+        height: 50px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #header img {
+        width: 20px;
+        height: 20px;
+    }
+
+    #header #app-name {
+        font-size: 20px;
+        margin-left: 5px;
+    }
+
+    #header i {
+        font-size: 20px;
+    }
+
+    #text-span {
+        font-size: 40px;
+    }
+
+    .swiper-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media (max-width: 425px) {
+    .content {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}

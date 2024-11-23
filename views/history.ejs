@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử mua hàng</title>
+    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        ul {
+            list-style: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/dashboard" class="back-to-dashboard">
+        <img src="/icons/bx-log-out.svg">
+    </a>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Lịch sử mua hàng</h2>
+
+        <form action="/history/search" method="GET" class="mb-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="date" name="date" class="form-control" 
+                        value="<%= typeof date !== 'undefined' ? date : '' %>">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>STT</th>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Khuyến mại</th>
+                            <th>Tổng tiền sau giảm</th>
+                            <th>Tổng tiền</th>
+                            <th>Ngày</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach((order, index) => { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td>
+                                    <ul>
+                                        <% order.products.forEach(product => { %>
+                                            <li><%= product.productId.name %></li>
+                                        <% }) %>
+                                    </ul>
+                                </td>                                
+                                <td>
+                                    <ul>
+                                        <% order.products.forEach(product => { %>
+                                            <li><%= product.quantity %></li>
+                                        <% }) %>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <% order.products.forEach(product => { %>
+                                            <li><%= product.price.toLocaleString() %> VND</li>
+                                        <% }) %>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <% order.products.forEach(product =>  { %>
+                                            <li><%= product.discountPercentage.toLocaleString() %>%</li>
+                                        <% }) %>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <% order.products.forEach(product =>  { %>
+                                            <li><%= product.totalProductPrice.toLocaleString() %> VND</li>
+                                        <% }) %>
+                                    </ul>
+                                </td>
+                                <td><%= order.totalPrice.toLocaleString() %> VND</td>
+                                <td><%= order.createdAt.toLocaleDateString() %></td>
+                                <td>
+                                    <span class="badge <%= order.status === 'Pending' ? 'bg-warning' : 'bg-success' %>">
+                                        <%= order.status %>
+                                    </span>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS (Bootstrap) -->
+    <script src="/assets/bs5/bootstrap.bundle.min.js"></script>
+</body>
+</html>

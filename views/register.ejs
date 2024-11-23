@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
+    <script src="/assets/jquery/jquery.js"></script>
+    <script src="/assets/swal2/swal2.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4CAF50;
+        }
+
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        p a {
+            color: #4CAF50;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Đăng ký</h1>
+        <form id="register-form" action="/register" method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập *</label>
+                <input type="text" class="form-control" id="username" name="username" required minlength="6"
+                    placeholder="Tên đăng nhập ít nhất 6 ký tự">
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu *</label>
+                <input type="password" class="form-control" id="password" name="password" required minlength="8"
+                    placeholder="Mật khẩu ít nhất 8 ký tự" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Mật khẩu phải có ít nhất một chữ hoa, chữ thường và một số">
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Số điện thoại *</label>
+                <div class="input-group">
+                    <span class="input-group-text">0</span>
+                    <input type="tel" class="form-control" id="phone" name="phone" required placeholder="Số điện thoại"
+                        pattern="^\d{9}$" title="Số điện thoại phải có đúng 9 chữ số">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email *</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="Email">
+            </div>
+
+            <div class="mb-3">
+                <label for="city" class="form-label">Tỉnh/TP *</label>
+                <select class="form-select" id="city" name="city" required>
+                    <option value="">Chọn tỉnh/thành phố</option>
+                    <option value="Hà Nội">Hà Nội</option>
+                    <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                    <option value="Đà Nẵng">Đà Nẵng</option>
+                    <option value="Hải Phòng">Hải Phòng</option>
+                    <option value="Cần Thơ">Cần Thơ</option>
+                    <option value="An Giang">An Giang</option>
+                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+                    <option value="Bắc Giang">Bắc Giang</option>
+                    <option value="Bắc Kạn">Bắc Kạn</option>
+                    <option value="Bạc Liêu">Bạc Liêu</option>
+                    <option value="Bắc Ninh">Bắc Ninh</option>
+                    <option value="Bến Tre">Bến Tre</option>
+                    <option value="Bình Định">Bình Định</option>
+                    <option value="Bình Dương">Bình Dương</option>
+                    <option value="Bình Phước">Bình Phước</option>
+                    <option value="Bình Thuận">Bình Thuận</option>
+                    <option value="Cà Mau">Cà Mau</option>
+                    <option value="Cao Bằng">Cao Bằng</option>
+                    <option value="Đắk Lắk">Đắk Lắk</option>
+                    <option value="Đắk Nông">Đắk Nông</option>
+                    <option value="Điện Biên">Điện Biên</option>
+                    <option value="Đồng Nai">Đồng Nai</option>
+                    <option value="Đồng Tháp">Đồng Tháp</option>
+                    <option value="Gia Lai">Gia Lai</option>
+                    <option value="Hà Giang">Hà Giang</option>
+                    <option value="Hà Nam">Hà Nam</option>
+                    <option value="Hà Tĩnh">Hà Tĩnh</option>
+                    <option value="Hậu Giang">Hậu Giang</option>
+                    <option value="Hòa Bình">Hòa Bình</option>
+                    <option value="Hưng Yên">Hưng Yên</option>
+                    <option value="Khánh Hòa">Khánh Hòa</option>
+                    <option value="Kiên Giang">Kiên Giang</option>
+                    <option value="Kon Tum">Kon Tum</option>
+                    <option value="Lai Châu">Lai Châu</option>
+                    <option value="Lâm Đồng">Lâm Đồng</option>
+                    <option value="Lạng Sơn">Lạng Sơn</option>
+                    <option value="Lào Cai">Lào Cai</option>
+                    <option value="Long An">Long An</option>
+                    <option value="Nam Định">Nam Định</option>
+                    <option value="Nghệ An">Nghệ An</option>
+                    <option value="Ninh Bình">Ninh Bình</option>
+                    <option value="Ninh Thuận">Ninh Thuận</option>
+                    <option value="Phú Thọ">Phú Thọ</option>
+                    <option value="Phú Yên">Phú Yên</option>
+                    <option value="Quảng Bình">Quảng Bình</option>
+                    <option value="Quảng Nam">Quảng Nam</option>
+                    <option value="Quảng Ngãi">Quảng Ngãi</option>
+                    <option value="Quảng Ninh">Quảng Ninh</option>
+                    <option value="Quảng Trị">Quảng Trị</option>
+                    <option value="Sóc Trăng">Sóc Trăng</option>
+                    <option value="Sơn La">Sơn La</option>
+                    <option value="Tây Ninh">Tây Ninh</option>
+                    <option value="Thái Bình">Thái Bình</option>
+                    <option value="Thái Nguyên">Thái Nguyên</option>
+                    <option value="Thanh Hóa">Thanh Hóa</option>
+                    <option value="Thừa Thiên - Huế">Thừa Thiên - Huế</option>
+                    <option value="Tiền Giang">Tiền Giang</option>
+                    <option value="Trà Vinh">Trà Vinh</option>
+                    <option value="Tuyên Quang">Tuyên Quang</option>
+                    <option value="Vĩnh Long">Vĩnh Long</option>
+                    <option value="Vĩnh Phúc">Vĩnh Phúc</option>
+                    <option value="Yên Bái">Yên Bái</option>
+                    <option value="Ninh Thuận">Ninh Thuận</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đăng ký</button>
+        </form>
+
+        <!-- Modal để nhập mã xác thực -->
+        <div class="modal fade" id="verifyModal" tabindex="-1" aria-labelledby="verifyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verifyModalLabel">Xác thực email</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Nhập mã xác thực được gửi đến email của bạn.</p>
+                        <input type="text" class="form-control" id="verificationCode" placeholder="Nhập mã xác thực"
+                            required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="verifyBtn">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p>Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
+    </div>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const city = document.getElementById('city').value;
+
+            // Kiểm tra tất cả các trường đã nhập đủ chưa
+            if (!username || !password || !phone || !email || !city) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Vui lòng nhập đầy đủ thông tin!',
+                });
+                return;
+            }
+
+            // Kiểm tra email và tên đăng nhập có tồn tại không
+            $.ajax({
+                url: '/check-user',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    username,
+                    email
+                }),
+                success: function (response) {
+                    if (response.exists) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Tên đăng nhập hoặc email đã tồn tại!',
+                        });
+                    } else {
+                        // Mở modal yêu cầu mã xác thực
+                        $('#verifyModal').modal('show');
+
+                        // Gửi email xác thực
+                        $.ajax({
+                            url: '/send-verification-email',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                email
+                            }),
+                            success: function () {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Thông báo',
+                                    text: 'Đã gửi mã xác thực đến email của bạn.',
+                                });
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi',
+                                    text: 'Không thể gửi mã xác thực. Vui lòng thử lại sau.',
+                                });
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Có lỗi xảy ra. Vui lòng thử lại sau.',
+                    });
+                }
+            });
+
+            // Xử lý xác nhận mã xác thực
+            document.getElementById('verifyBtn').addEventListener('click', function () {
+                const verificationCode = document.getElementById('verificationCode').value;
+
+                if (verificationCode) {
+                    $.ajax({
+                        url: '/verify-code',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            email,
+                            code: verificationCode
+                        }),
+                        success: function (response) {
+                            if (response.message === 'Xác thực thành công.') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công',
+                                    text: 'Xác thực thành công! Tài khoản của bạn đã được tạo.',
+                                }).then(() => {
+                                    // Sau khi xác thực thành công, lưu tài khoản
+                                    $.ajax({
+                                        url: '/register',
+                                        method: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({
+                                            username,
+                                            password,
+                                            phone,
+                                            email,
+                                            city
+                                        }),
+                                        success: function () {
+                                            window.location.href = '/login';
+                                        }
+                                    });
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi',
+                                    text: 'Mã xác thực không chính xác.',
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: 'Có lỗi xảy ra. Vui lòng thử lại sau.',
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="/assets/bs5/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

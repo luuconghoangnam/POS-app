@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý cửa hàng</title>
+    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
+    <script src="/assets/jquery/jquery.js"></script>
+    <script src="/assets/swal2/swal2.js"></script>
+</head>
+<body>
+    <link rel="stylesheet" href="/css/style.css">
+    <a href="/dashboard" class="back-to-dashboard">
+        <img src="/icons/bx-log-out.svg">
+    </a>
+    <div class="container mt-5">
+        <h2>Quản lý cửa hàng</h2>
+
+        <% if (shop) { %>
+            <!-- Hiển thị thông tin cửa hàng -->
+            <form id="update-shop-form" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="storeName" class="form-label">Tên cửa hàng</label>
+                    <input type="text" class="form-control" id="storeName" name="storeName" value="<%= shop.storeName %>">
+                </div>
+                <div class="mb-3">
+                    <label for="storeAddress" class="form-label">Địa chỉ cửa hàng</label>
+                    <input type="text" class="form-control" id="storeAddress" name="storeAddress" value="<%= shop.storeAddress %>">
+                </div>
+                <div class="mb-3">
+                    <label for="bankAccountNumber" class="form-label">Số tài khoản ngân hàng</label>
+                    <input type="text" class="form-control" id="bankAccountNumber" name="bankAccountNumber" value="<%= shop.bankAccountNumber %>">
+                </div>
+                <div class="mb-3">
+                    <label for="bankName" class="form-label">Tên ngân hàng</label>
+                    <input type="text" class="form-control" id="bankName" name="bankName" value="<%= shop.bankName %>">
+                </div>
+                <div class="mb-3">
+                    <label for="qrCodeImage" class="form-label">Hình ảnh mã QR</label><br>
+                    <% if (shop.qrCodeImageUrl) { %>
+                        <img id="qrPreview" src="<%= shop.qrCodeImageUrl %>" alt="QR Code" width="200"><br>
+                    <% } %>
+                    <input type="file" class="form-control" id="qrCodeImage" name="qrCodeImage" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
+            </form>
+        <% } else { %>
+            <!-- Form tạo cửa hàng mới -->
+            <form id="create-shop-form" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="storeName" class="form-label">Tên cửa hàng</label>
+                    <input type="text" class="form-control" id="storeName" name="storeName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="storeAddress" class="form-label">Địa chỉ cửa hàng</label>
+                    <input type="text" class="form-control" id="storeAddress" name="storeAddress" required>
+                </div>
+                <div class="mb-3">
+                    <label for="qrCodeImage" class="form-label">Hình ảnh mã QR</label>
+                    <input type="file" class="form-control" id="qrCodeImage" name="qrCodeImage" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label for="bankAccountNumber" class="form-label">Số tài khoản ngân hàng</label>
+                    <input type="text" class="form-control" id="bankAccountNumber" name="bankAccountNumber">
+                </div>
+                <div class="mb-3">
+                    <label for="bankName" class="form-label">Tên ngân hàng</label>
+                    <input type="text" class="form-control" id="bankName" name="bankName">
+                </div>
+                <button type="submit" class="btn btn-primary">Tạo cửa hàng</button>
+            </form>
+        <% } %>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Xử lý cập nhật hoặc tạo cửa hàng
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: '/shop',
+                    method: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: response.message,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: xhr.responseJSON ? xhr.responseJSON.message : 'Lỗi không xác định xảy ra',
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

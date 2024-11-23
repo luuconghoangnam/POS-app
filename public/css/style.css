@@ -1,0 +1,35 @@
+.back-to-dashboard {
+    position: fixed;
+    z-index: 999999;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(255, 255, 255, 0.88);
+    backdrop-filter: 5px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.back-to-dashboard img {
+    height: 100%;
+}
+
+/* products */
+.discount-label {
+    font-size: 0.9em;
+    padding: 5px;
+    border-radius: 3px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.card-text s {
+    color: #888;
+}
+
+.card-img-top {
+    position: relative;
+    height: 250px;
+    object-fit: cover;
+}

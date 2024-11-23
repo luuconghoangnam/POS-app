@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Supermarket</title>
+    <link rel="stylesheet" href="/assets/swiper/swiper.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/index.css">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mini Supermarket" />
+</head>
+
+<body>
+    <div class="image-container">
+        <img id="main-image" src="/images/bg.jpg" alt="Main image">
+    </div>
+
+    <header id="header">
+        <div onclick="goToHomepage()" style="cursor: pointer;">
+            <span id="app-name">Mini Supermarket</span>
+        </div>
+        <button id="play">Bắt đầu</button>
+    </header>
+
+    <div class="black-filter">
+        <span id="text-span"></span>
+    </div>
+
+    <div class="content">
+        <section class="testimonial">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <span class="testimonial-name">Chị Lan, chủ cửa hàng tạp hóa</span>
+                        <div class="testimonial-line"></div>
+                        <span class="testimonial-content">Ứng dụng siêu thị mini này đã giúp tôi quản lý cửa hàng dễ
+                            dàng hơn bao giờ hết. Từ quản lý tồn kho đến xử lý đơn hàng, mọi thứ đều được thực hiện
+                            nhanh chóng và chính xác. Tôi có thể tập trung vào kinh doanh mà không cần lo lắng về việc
+                            kiểm soát hàng hóa.</span>
+                        <img class="icon-quote-right" src="/icons/quote-right-solid.svg"
+                            alt="Quản lý siêu thị mini hiệu quả">
+                    </div>
+                    <div class="swiper-slide">
+                        <span class="testimonial-name">Anh Hùng, chủ doanh nghiệp nhỏ</span>
+                        <div class="testimonial-line"></div>
+                        <span class="testimonial-content">Ứng dụng này là trợ thủ đắc lực cho công việc bán hàng của
+                            tôi. Tính năng quét mã vạch và tích hợp thanh toán nhanh giúp tiết kiệm rất nhiều thời gian.
+                            Tôi cảm thấy yên tâm vì tất cả dữ liệu được quản lý chặt chẽ, từ số lượng hàng tồn đến doanh
+                            thu hàng ngày.</span>
+                        <img class="icon-quote-right" src="/icons/quote-right-solid.svg"
+                            alt="Ứng dụng siêu thị mini đa chức năng">
+                    </div>
+                    <div class="swiper-slide">
+                        <span class="testimonial-name">Chị Phương, chủ tiệm tạp hóa</span>
+                        <div class="testimonial-line"></div>
+                        <span class="testimonial-content">Từ khi sử dụng ứng dụng siêu thị mini, việc theo dõi hàng tồn
+                            kho và quản lý các mặt hàng đã trở nên đơn giản hơn rất nhiều. Không còn những ghi chú lộn
+                            xộn, tất cả đều được số hóa và dễ dàng theo dõi trên ứng dụng. Rất tiện lợi!</span>
+                        <img class="icon-quote-right" src="/icons/quote-right-solid.svg"
+                            alt="Ứng dụng hỗ trợ kinh doanh tạp hóa">
+                    </div>
+                    <div class="swiper-slide">
+                        <span class="testimonial-name">Anh Nam, người kinh doanh bán lẻ</span>
+                        <div class="testimonial-line"></div>
+                        <span class="testimonial-content">Ứng dụng siêu thị mini này là sự lựa chọn hoàn hảo cho những
+                            ai muốn quản lý công việc bán lẻ một cách hiệu quả. Tôi có thể kiểm soát hàng hóa và đơn
+                            hàng chỉ với vài cú nhấp chuột. Điều này đã giúp công việc kinh doanh của tôi trở nên trôi
+                            chảy hơn rất nhiều.</span>
+                        <img class="icon-quote-right" src="/icons/quote-right-solid.svg" alt="Quản lý bán lẻ dễ dàng">
+                    </div>
+                    <div class="swiper-slide">
+                        <span class="testimonial-name">Anh Toàn, chủ cửa hàng tiện lợi</span>
+                        <div class="testimonial-line"></div>
+                        <span class="testimonial-content">Ứng dụng này không chỉ giúp tôi quản lý hàng hóa mà còn cung
+                            cấp nhiều báo cáo hữu ích về doanh thu và lợi nhuận. Tôi dễ dàng theo dõi hiệu suất của cửa
+                            hàng mình và đưa ra các quyết định kinh doanh chính xác hơn.</span>
+                        <img class="icon-quote-right" src="/icons/quote-right-solid.svg"
+                            alt="Phân tích hiệu suất bán hàng thông minh">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <span id="intro-text">
+            Chào mừng bạn đến với ứng dụng Siêu Thị Mini - giải pháp quản lý cửa hàng tạp hóa và kinh doanh bán lẻ hiệu
+            quả, tiện lợi và thông minh!
+            <br><br>
+            Bạn có thể quản lý hàng hóa, đơn hàng, khách hàng và doanh thu chỉ với vài thao tác đơn giản. Với giao diện
+            dễ sử dụng và các tính năng hỗ trợ toàn diện, ứng dụng của chúng tôi giúp bạn nắm bắt tình hình kinh doanh
+            ngay trong tầm tay.
+            <br><br>
+            Hãy để Siêu Thị Mini đồng hành cùng bạn trong việc tối ưu hóa quản lý kinh doanh, tiết kiệm thời gian và
+            tăng cường hiệu quả bán hàng. Ứng dụng không chỉ là công cụ, mà còn là giải pháp hỗ trợ bạn phát triển doanh
+            nghiệp một cách vững chắc!
+        </span>
+
+        <div class="line"></div>
+
+        <span class="copyright">© 2024 Mini Supermarket | All Rights Reserved</span>
+
+        <span class="copyright">Developed by <a href="https://aboutmeobeo.netlify.app/"
+                target="_blank" style="color: rgb(0, 0, 0); font-weight: 600;">Meobeo</a></span>
+
+        <div style="width: 100%; height: 20px; display: block;"></div>
+    </div>
+</body>
+<script src="/assets/swiper/swiper.js"></script>
+<script src="/js/index.js"></script>
+
+</html>
