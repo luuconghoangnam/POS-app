@@ -25,10 +25,16 @@ const isAuthenticated = (req, res, next) => {
 const upload = multer({
     dest: path.join(__dirname, '../uploads'),
     fileFilter: (req, file, cb) => {
-        if (file.mimetype.startsWith('image/')) {
-            cb(null, true);
+        // Cập nhật danh sách các loại file ảnh được chấp nhận
+        const allowedMimeTypes = [
+            'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 
+            'image/webp', 'image/bmp', 'image/svg+xml', 'image/tiff'
+        ];
+
+        if (allowedMimeTypes.includes(file.mimetype)) {
+            cb(null, true); // Chấp nhận file
         } else {
-            cb(new Error('File không hợp lệ. Chỉ chấp nhận ảnh.'));
+            cb(new Error('File không hợp lệ. Chỉ chấp nhận các định dạng ảnh: jpeg, jpg, png, gif, webp, bmp, svg, tiff.'));
         }
     },
 });
