@@ -13,71 +13,153 @@
             background-color: #f4f6f9;
             margin: 0;
             padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
 
         h1 {
             color: #2c3e50;
-            margin: 20px 0;
+            margin-bottom: 20px;
             text-align: center;
-            font-size: 36px;
-            font-weight: bold;
+            font-size: 28px;
+            padding: 15px;
+            width: 100%;
         }
 
+        /* Menu bên trái */
         .dashboard-menu {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            flex-direction: column;
             padding: 20px;
+            background-color: #34495e;
+            width: 250px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            height: 100vh; /* Chiều cao đầy đủ của màn hình */
+            overflow-y: auto; /* Trường hợp có nhiều mục menu */
+            position: fixed;
+            left: 0;
+            top: 0;
+            transition: transform 0.3s ease; /* Để thực hiện hiệu ứng trượt khi mở/đóng menu */
         }
 
         .menu-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            width: calc(25% - 20px); /* Ensures 4 blocks per row */
-            height: 150px;
-            background-color: #34495e;
             color: #fff;
-            font-size: 16px;
-            text-align: center;
-            border-radius: 10px;
-            transition: transform 0.3s ease, background-color 0.3s ease;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            background-color: #2c3e50;
+            border-radius: 5px;
             text-decoration: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            width: 100%;
         }
 
         .menu-item:hover {
             background-color: #1abc9c;
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
         .menu-item i {
-            font-size: 30px;
-            margin-bottom: 10px;
+            margin-right: 10px;
+            font-size: 20px;
         }
 
-        @media (max-width: 992px) {
+        /* Phần nội dung hiển thị bên phải */
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #ecf0f1;
+            overflow: auto;
+            margin-left: 200px; /* Đảm bảo phần nội dung bắt đầu từ sau menu */
+            transition: margin-left 0.3s ease; /* Chuyển đổi vị trí của nội dung khi menu đóng/mở */
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .dashboard-menu {
+                width: 50%; /* Menu chiếm nửa màn hình */
+                transform: translateX(-100%); /* Ẩn menu ban đầu */
+            }
+
+            .content {
+                margin-left: 0; /* Đảm bảo nội dung chiếm toàn bộ chiều rộng */
+            }
+
             .menu-item {
-                width: calc(50% - 20px); /* 2 blocks per row for tablets */
+                font-size: 16px;
+                padding: 12px 15px;
+            }
+
+            /* Thêm một nút để mở menu */
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                font-size: 30px;
+                color: #34495e;
+                background: transparent;
+                border: none;
+                z-index: 1000;
             }
         }
 
         @media (max-width: 576px) {
+            .dashboard-menu {
+                width: 100%;
+                position: fixed;
+                bottom: 0;
+                flex-direction: row;
+                justify-content: space-around;
+                box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+                transform: translateX(0);
+            }
+
             .menu-item {
-                width: 100%; /* Full width for mobile */
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                padding: 10px;
+                width: 100%;
+            }
+
+            .content {
+                padding-top: 60px;
+            }
+
+            .menu-item span {
+                display: none; /* Ẩn văn bản trên các màn hình nhỏ */
+            }
+
+            .menu-item:hover {
+                background-color: #16a085; /* Màu sắc khi hover trên các màn hình nhỏ */
             }
         }
     </style>
 </head>
 
 <body>
-    <h1>Dashboard</h1>
-    <div class="dashboard-menu">
+    <button class="menu-toggle" id="menu-toggle">
+        <i class="fas fa-bars"></i> <!-- Icon hamburger để mở menu -->
+    </button>
+    
+    <div class="dashboard-menu" id="dashboard-menu">
+        <h1 style="text-align: center; padding: 20px; margin: 0;">
+            <a href="/dashboard" style="color: white; text-decoration: none; font-size: 32px;"
+                onmouseover=" this.style.color='#1abc9c';"
+                onmouseout="this.style.textDecoration='none'; this.style.color='white';">
+                Dashboard
+            </a>
+        </h1>
         <a href="/sales" class="menu-item">
             <i class="fas fa-shopping-cart"></i>
             <span>Bán hàng</span>
@@ -115,6 +197,33 @@
             <span>Đăng xuất</span>
         </a>
     </div>
+
+    <div class="content">
+        <!-- Nội dung của trang sẽ được hiển thị ở đây -->
+        <iframe id="iframe-content" src="/sales" title="Nội dung trang"></iframe>
+    </div>
+
+    <script>
+        document.querySelectorAll('.menu-item').forEach(menuItem => {
+            menuItem.addEventListener('click', function (e) {
+                e.preventDefault(); // Ngăn chuyển trang
+                const url = this.getAttribute('href'); // Lấy URL từ href
+                document.getElementById('iframe-content').src = url; // Thay đổi src của iframe
+            });
+        });
+
+        // Tạo sự kiện cho nút mở menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const dashboardMenu = document.getElementById('dashboard-menu');
+
+        menuToggle.addEventListener('click', () => {
+            if (dashboardMenu.style.transform === 'translateX(0px)') {
+                dashboardMenu.style.transform = 'translateX(-100%)'; // Đóng menu
+            } else {
+                dashboardMenu.style.transform = 'translateX(0)'; // Mở menu
+            }
+        });
+    </script>
 
     <!-- Bootstrap JS -->
     <script src="/assets/bs5/bootstrap.bundle.min.js"></script>
