@@ -51,17 +51,31 @@
         }
 
         #show-menu-btn {
-            font-size: 24px;
-            cursor: pointer;
-            color: #34495e;
-            background: none;
-            border: none;
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
-            display: none;
-        }
+    font-size: 10px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #34495e;
+    border: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 20px;
+    z-index: 1001;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#show-menu-btn i {
+    transform: rotate(90deg);
+}
+
+#show-menu-btn:hover {
+    background-color: #1abc9c;
+}
+
 
         .nav_list {
             list-style: none;
@@ -183,6 +197,18 @@
             }
         }
     });
+    menuBtn.addEventListener('click', () => {
+    sidebar.classList.add('hide');
+    content.classList.add('hide');
+    showMenuBtn.style.display = 'flex'; // Chuyển sang flex để hiện thanh dài
+});
+
+showMenuBtn.addEventListener('click', () => {
+    sidebar.classList.remove('hide');
+    content.classList.remove('hide');
+    showMenuBtn.style.display = 'none';
+});
+
 </script>
 
 </body>
