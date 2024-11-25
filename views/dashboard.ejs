@@ -132,12 +132,12 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="logo-content" style="text-align: center;">
-            <span 
+            <a href="/"
             style="color: #00d0ff; font-size: 25px; text-decoration: none;"
             onmouseover="this.style.color='white'; this.style.backgroundColor='#007bff'; this.style.padding='2px 5px'; this.style.borderRadius='5px';"
-            onmouseout="this.style.color='#333'; this.style.backgroundColor=''; this.style.padding=''; this.style.borderRadius='';">
+            onmouseout="this.style.color='#333'; this.style.backgroundColor=''; this.style.padding=''; this.style.borderRadius='';" href>
             Home
-        </span>
+            </a>
             <button id="menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -166,52 +166,44 @@
     </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const menuBtn = document.getElementById('menu-btn');
-        const sidebar = document.getElementById('sidebar');
-        const content = document.getElementById('content');
-        const showMenuBtn = document.getElementById('show-menu-btn');
-        const iframe = document.getElementById('iframe-content');
+document.addEventListener('DOMContentLoaded', function () {
+    const menuBtn = document.getElementById('menu-btn');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+    const showMenuBtn = document.getElementById('show-menu-btn');
+    const iframe = document.getElementById('iframe-content');
 
-        if (menuBtn && sidebar && content && showMenuBtn) {
-            menuBtn.addEventListener('click', () => {
-                sidebar.classList.add('hide');
-                content.classList.add('hide');
-                showMenuBtn.style.display = 'block';
-            });
+    if (!menuBtn || !showMenuBtn) {
+        console.error('Menu buttons not found!');
+        return;
+    }
 
-            showMenuBtn.addEventListener('click', () => {
-                sidebar.classList.remove('hide');
-                content.classList.remove('hide');
-                showMenuBtn.style.display = 'none';
-            });
-        }
-
-        if (iframe) {
-            const menuItems = document.querySelectorAll('.menu-item');
-            if (menuItems.length > 0) {
-                menuItems.forEach(item => {
-                    item.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const url = this.getAttribute('href');
-                        iframe.src = url;
-                    });
-                });
-            } else {
-                console.warn('No menu items found.');
-            }
-        }
-    });
     menuBtn.addEventListener('click', () => {
-    sidebar.classList.add('hide');
-    content.classList.add('hide');
-    showMenuBtn.style.display = 'flex'; // Chuyển sang flex để hiện thanh dài
-});
+        sidebar.classList.add('hide');
+        content.classList.add('hide');
+        showMenuBtn.style.display = 'flex';
+    });
 
-showMenuBtn.addEventListener('click', () => {
-    sidebar.classList.remove('hide');
-    content.classList.remove('hide');
-    showMenuBtn.style.display = 'none';
+    showMenuBtn.addEventListener('click', () => {
+        sidebar.classList.remove('hide');
+        content.classList.remove('hide');
+        showMenuBtn.style.display = 'none';
+    });
+
+    if (iframe) {
+        const menuItems = document.querySelectorAll('.menu-item');
+        if (menuItems.length > 0) {
+            menuItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('href');
+                    iframe.src = url;
+                });
+            });
+        } else {
+            console.warn('No menu items found.');
+        }
+    }
 });
 
 </script>
