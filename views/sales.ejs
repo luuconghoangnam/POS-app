@@ -9,32 +9,39 @@
     <link rel="stylesheet" href="/css/sale.css">
     <script src="/assets/swal2/swal2.js"></script>
     <style>
-    .list-group-item.active {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-    };
-    .card {
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    };
-    .card:hover {
-    transform: translateY(-5px);
-    transition: 0.3s ease-in-out;
-    };
-    #checkout-btn {
-    background: linear-gradient(90deg, #28a745, #218838);
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 5px;
-}
-#checkout-btn:hover {
-    background: linear-gradient(90deg, #218838, #1e7e34);
-}
+        .list-group-item.active {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
 
+        ;
 
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
+        ;
+
+        .card:hover {
+            transform: translateY(-5px);
+            transition: 0.3s ease-in-out;
+        }
+
+        ;
+
+        #checkout-btn {
+            background: linear-gradient(90deg, #28a745, #218838);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        #checkout-btn:hover {
+            background: linear-gradient(90deg, #218838, #1e7e34);
+        }
     </style>
 </head>
 
@@ -49,12 +56,12 @@
                     <a href="/sales"
                         class="list-group-item list-group-item-action <%= selectedCategory === 'Tất cả' ? 'active' : '' %>">Tất
                         cả</a>
-                    <% categories.forEach(category => { %>
+                    <% categories.forEach(category=> { %>
                         <a href="/sales?category=<%= category.name %>"
                             class="list-group-item list-group-item-action <%= selectedCategory === category.name ? 'active' : '' %>">
                             <%= category.name %>
                         </a>
-                    <% }) %>
+                        <% }) %>
                 </div>
             </div>
 
@@ -66,10 +73,10 @@
                 </div>
 
                 <div class="row" id="product-list">
-                    <% products.forEach(product => { %>
-                        <div class="col-md-3 mb-4 product-item" style="min-width: 250px !important;">
+                    <% products.forEach(product=> { %>
+                        <div class="col-md-3 mb-4 product-item" style="min-width: 230px !important;">
                             <div class="card">
-                                <% if (product.stock === 0) { %>
+                                <% if (product.stock===0) { %>
                                     <div class="card-body border border-danger p-2" style="position: relative;">
                                         <span class="badge bg-danger"
                                             style="position: absolute; top: 10px; right: 10px;">Hết hàng</span>
@@ -85,36 +92,45 @@
                                             <button class="btn btn-secondary disabled">Hết hàng</button>
                                         </div>
                                     </div>
-                                <% } else { %>
-                                    <div class="card-body">
-                                        <% if (product.discountPercentage > 0) { %>
-                                            <div class="discount-label bg-danger text-white p-1 position-absolute top-0 end-0">
-                                                -<%= product.discountPercentage %>%</div>
-                                        <% } %>
-                                        <img src="<%= product.imageUrl %>" class="card-img-top" alt="Product Image">
-                                        <div class="card-body text-center">
-                                            <h6 class="card-title">
-                                                <%= product.name %>
-                                            </h6>
-                                            <% if (product.discountPercentage > 0) { %>
-                                                <s class="card-text"><%= product.price %>đ</s>
-                                                <p class="card-text text-danger">
-                                                    <%= product.price * (1 - product.discountPercentage / 100) %>đ
-                                                </p>
-                                            <% } else { %>
-                                                <p class="card-text">
-                                                    <%= product.price %>đ
-                                                </p>
-                                                <br>
-                                            <% } %>
-                                            <p class="card-text">Số lượng còn: <%= product.stock %></p>
-                                            <button class="btn btn-primary add-to-cart" data-id="<%= product._id %>">Thêm vào giỏ</button>
+                                    <% } else { %>
+                                        <div class="card-body">
+                                            <% if (product.discountPercentage> 0) { %>
+                                                <div
+                                                    class="discount-label bg-danger text-white p-1 position-absolute top-0 end-0">
+                                                    -<%= product.discountPercentage %>%</div>
+                                                <% } %>
+                                                    <img src="<%= product.imageUrl %>" class="card-img-top"
+                                                        alt="Product Image">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title">
+                                                            <%= product.name %>
+                                                        </h6>
+                                                        <% if (product.discountPercentage> 0) { %>
+                                                            <s class="card-text">
+                                                                <%= product.price %>đ
+                                                            </s>
+                                                            <p class="card-text text-danger">
+                                                                <%= product.price * (1 - product.discountPercentage /
+                                                                    100) %>đ
+                                                            </p>
+                                                            <% } else { %>
+                                                                <p class="card-text">
+                                                                    <%= product.price %>đ
+                                                                </p>
+                                                                <br>
+                                                                <% } %>
+                                                                    <p class="card-text">Số lượng còn: <%= product.stock
+                                                                            %>
+                                                                    </p>
+                                                                    <button class="btn btn-primary add-to-cart"
+                                                                        data-id="<%= product._id %>">Thêm vào
+                                                                        giỏ</button>
+                                                    </div>
                                         </div>
-                                    </div>
-                                <% } %>
+                                        <% } %>
                             </div>
                         </div>
-                    <% }) %>
+                        <% }) %>
                 </div>
             </div>
 
@@ -147,12 +163,14 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="paymentMethod"
                                                 id="bankTransfer" value="bank">
-                                            <label class="form-check-label" for="bankTransfer">Chuyển khoản ngân hàng</label>
+                                            <label class="form-check-label" for="bankTransfer">Chuyển khoản ngân
+                                                hàng</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="paymentMethod"
                                                 id="cashPayment" value="cash">
-                                            <label class="form-check-label" for="cashPayment">Thanh toán tiền mặt</label>
+                                            <label class="form-check-label" for="cashPayment">Thanh toán tiền
+                                                mặt</label>
                                         </div>
 
                                         <!-- Bank transfer section -->
@@ -160,19 +178,23 @@
                                             <h6 class="mt-3">Quét mã QR để thanh toán:</h6>
                                             <% if (store.qrCodeImageUrl) { %>
                                                 <img src="<%= store.qrCodeImageUrl %>" alt="QR Code" class="img-fluid">
-                                            <% } else { %>
-                                                <p>Chưa có mã QR</p>
-                                            <% } %>
-                                            <h6 class="mt-3">Thông tin tài khoản ngân hàng:</h6>
-                                            <p>Ngân hàng: <%= store.bankName || 'Chưa có' %></p>
-                                            <p>Số tài khoản: <%= store.bankAccountNumber || 'Chưa có' %></p>
-                                            <button id="confirmBankTransfer" class="btn btn-primary mt-3">Xác nhận đã thanh toán</button>
+                                                <% } else { %>
+                                                    <p>Chưa có mã QR</p>
+                                                    <% } %>
+                                                        <h6 class="mt-3">Thông tin tài khoản ngân hàng:</h6>
+                                                        <p>Ngân hàng: <%= store.bankName || 'Chưa có' %>
+                                                        </p>
+                                                        <p>Số tài khoản: <%= store.bankAccountNumber || 'Chưa có' %>
+                                                        </p>
+                                                        <button id="confirmBankTransfer"
+                                                            class="btn btn-primary mt-3">Xác nhận đã thanh toán</button>
                                         </div>
 
                                         <!-- Cash payment section -->
                                         <div id="cashPaymentDetails" style="display: none;">
                                             <h6 class="mt-3">Xác nhận thanh toán tiền mặt</h6>
-                                            <button id="confirmCashPayment" class="btn btn-primary">Xác nhận đã thanh toán</button>
+                                            <button id="confirmCashPayment" class="btn btn-primary">Xác nhận đã thanh
+                                                toán</button>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -194,8 +216,8 @@
     <script src="/js/sales.js"></script>
     <script>
         $('.add-to-cart').click(function () {
-        $('#cart-items').append('<li class="list-group-item">Sản phẩm mới</li>').hide().slideDown();
-    });
+            $('#cart-items').append('<li class="list-group-item">Sản phẩm mới</li>').hide().slideDown();
+        });
     </script>
 </body>
 
