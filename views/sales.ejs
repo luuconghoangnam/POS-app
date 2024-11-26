@@ -39,7 +39,7 @@
 
                 <div class="row" id="product-list">
                     <% products.forEach(product => { %>
-                        <div class="col-md-3 mb-4 product-item">
+                        <div class="col-md-3 mb-4 product-item" style="min-width: 250px !important;">
                             <div class="card">
                                 <% if (product.stock === 0) { %>
                                     <div class="card-body border border-danger p-2" style="position: relative;">
