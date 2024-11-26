@@ -8,16 +8,44 @@
     <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/sale.css">
     <script src="/assets/swal2/swal2.js"></script>
+    <style>
+    .list-group-item.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+    };
+    .card {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    };
+    .card:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease-in-out;
+    };
+    #checkout-btn {
+    background: linear-gradient(90deg, #28a745, #218838);
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+#checkout-btn:hover {
+    background: linear-gradient(90deg, #218838, #1e7e34);
+}
+
+
+
+    </style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar bên trái chứa các danh mục -->
-            <div class="col-md-2">
+            <div class="col-md-2" style="padding-left: 25px;">
                 <div class="list-group">
-                    <a href="/dashboard" class="list-group-item list-group-item-action"
-                    style="background-color: #333; color: #fff;">Về trang tổng quan</a>
+                    <!-- <a href="/dashboard" class="list-group-item list-group-item-action"
+                    style="background-color: #333; color: #fff;">Về trang tổng quan</a> -->
                     <a href="/sales"
                         class="list-group-item list-group-item-action <%= selectedCategory === 'Tất cả' ? 'active' : '' %>">Tất
                         cả</a>
@@ -91,7 +119,7 @@
             </div>
 
             <!-- Phần giỏ hàng bên phải -->
-            <div class="col-md-3">
+            <div class="col-md-3" style="margin-left: auto;">
                 <div class="cart">
                     <h5>Giỏ hàng</h5>
                     <ul class="list-group" id="cart-items">
@@ -164,6 +192,11 @@
     <script src="/assets/jquery/jquery.js"></script>
     <script src="/assets/bs5/bootstrap.bundle.min.js"></script>
     <script src="/js/sales.js"></script>
+    <script>
+        $('.add-to-cart').click(function () {
+        $('#cart-items').append('<li class="list-group-item">Sản phẩm mới</li>').hide().slideDown();
+    });
+    </script>
 </body>
 
 </html>

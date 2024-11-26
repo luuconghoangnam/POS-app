@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,6 +56,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Đăng nhập</h1>
@@ -63,12 +65,19 @@
         <form id="login-form" action="/login" method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">Tên đăng nhập *</label>
-                <input type="text" class="form-control" id="username" name="username" required placeholder="Nhập tên đăng nhập của bạn">
+                <input type="text" class="form-control" id="username" name="username" required
+                    placeholder="Nhập tên đăng nhập của bạn">
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Mật khẩu *</label>
-                <input type="password" class="form-control" id="password" name="password" required placeholder="Nhập mật khẩu">
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" required
+                        placeholder="Nhập mật khẩu">
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword" style="width: fit-content; min-width: 60px;">
+                        Hiện
+                    </button>
+                </div>
             </div>
 
             <button type="submit" class="btn btn-primary">Đăng nhập</button>
@@ -126,6 +135,21 @@
                 }
             });
         });
+
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('password');
+            const toggleButton = document.getElementById('togglePassword');
+
+            // Kiểm tra trạng thái hiện tại của input password
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text'; // Đổi sang dạng text
+                toggleButton.textContent = 'Ẩn'; // Thay đổi nút thành 'Ẩn'
+            } else {
+                passwordField.type = 'password'; // Đổi về dạng password
+                toggleButton.textContent = 'Hiện'; // Thay đổi nút thành 'Hiện'
+            }
+        });
     </script>
 </body>
+
 </html>
