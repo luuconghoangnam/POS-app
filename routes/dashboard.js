@@ -383,10 +383,11 @@ router.get('/products', isAuthenticated, async (req, res) => {
 
         res.renderWithLayout('products', {
             title: 'Quản lý kho',
+            store,
             products,
             categories,
             exportHistories,
-        })
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Lỗi server');
@@ -760,23 +761,32 @@ router.post('/products/export', async (req, res) => {
     }
 });
 
-// Route để lấy chi tiết hóa đơn xuất kho
 router.get('/export-history/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-
-        // Tìm hóa đơn xuất kho theo ID
-        const exportHistory = await ExportHistory.findById(id);
+        const exportHistory = await ExportHistory.findById(req.params.id).lean();
+        const store = await Store.findOne();
 
         if (!exportHistory) {
-            return res.status(404).json({ message: 'Không tìm thấy hóa đơn xuất kho.' });
+            console.log('Hóa đơn không tồn tại');
+            return res.status(404).json({ message: 'Hóa đơn không tồn tại' });
         }
 
-        // Trả về dữ liệu hóa đơn
-        res.status(200).json(exportHistory);
-    } catch (error) {
-        console.error('Lỗi khi lấy hóa đơn xuất kho:', error.message);
-        res.status(500).json({ message: 'Đã xảy ra lỗi trong quá trình xử lý.' });
+        const responseData = {
+            ...exportHistory,
+            store: store ? {
+                storeName: store.storeName,
+                storeAddress: store.storeAddress,
+                bankName: store.bankName,
+                bankAccountNumber: store.bankAccountNumber,
+                qrCodeImageUrl: store.qrCodeImageUrl,
+            } : null,
+        };
+
+        console.log('Dữ liệu hóa đơn trả về:', responseData); // Kiểm tra dữ liệu trong console
+        res.json(responseData);
+    } catch (err) {
+        console.error('Lỗi khi lấy hóa đơn:', err);
+        res.status(500).json({ message: 'Lỗi server' });
     }
 });
 
