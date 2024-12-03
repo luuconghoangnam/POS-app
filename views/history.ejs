@@ -1,111 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch sử mua hàng</title>
-    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-    <style>
-        ul {
-            list-style: none !important;
-        }
-    </style>
-</head>
+<style>
+    ul {
+        list-style: none !important;
+    }
+</style>
 
-<body>
-    <!-- <a href="/dashboard" class="back-to-dashboard">
-        <img src="/icons/bx-log-out.svg">
-    </a> -->
+<link rel="stylesheet" href="/assets/flatpickr/flatpickr.css">
+<script src="/assets/flatpickr/flatpickr.js"></script>
 
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Lịch sử bán hàng</h2>
 
-        <form action="/history/search" method="GET" class="mb-4">
-            <div class="row">
-                <div class="col-md-3">
-                    <input type="date" name="date" class="form-control" 
-                        value="<%= typeof date !== 'undefined' ? date : '' %>">
-                </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                </div>
-            </div>
-        </form>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Lịch sử bán hàng</h2>
 
+    <form action="/history/search" method="GET" class="mb-4">
         <div class="row">
-            <div class="col-12">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-primary">
-                        <tr>
-                            <th>STT</th>
-                            <th>Sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Giá</th>
-                            <th>Khuyến mại</th>
-                            <th>Tổng tiền sau giảm</th>
-                            <th>Tổng tiền</th>
-                            <th>Ngày</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% orders.forEach((order, index) => { %>
-                            <tr>
-                                <td><%= index + 1 %></td>
-                                <td>
-                                    <ul>
-                                        <% order.products.forEach(product => { %>
-                                            <li>
-                                                <%= product.productId && product.productId.name ? product.productId.name : 'Sản phẩm đã bị xóa' %>
-                                            </li>
-                                        <% }) %>
-                                    </ul>                                    
-                                </td>                                
-                                <td>
-                                    <ul>
-                                        <% order.products.forEach(product => { %>
-                                            <li><%= product.quantity %></li>
-                                        <% }) %>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <% order.products.forEach(product => { %>
-                                            <li><%= product.price.toLocaleString() %> VND</li>
-                                        <% }) %>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <% order.products.forEach(product =>  { %>
-                                            <li><%= product.discountPercentage.toLocaleString() %>%</li>
-                                        <% }) %>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <% order.products.forEach(product =>  { %>
-                                            <li><%= product.totalProductPrice.toLocaleString() %> VND</li>
-                                        <% }) %>
-                                    </ul>
-                                </td>
-                                <td><%= order.totalPrice.toLocaleString() %> VND</td>
-                                <td><%= order.createdAt.toLocaleDateString() %></td>
-                                <td>
-                                    <span class="badge <%= order.status === 'Pending' ? 'bg-warning' : 'bg-success' %>">
-                                        <%= order.status %>
-                                    </span>
-                                </td>
-                            </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
+            <div class="col-md-3">
+                <input id="date-picker" type="text" name="date" class="form-control"
+                    value="<%= typeof date !== 'undefined' ? date : '' %>">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
             </div>
         </div>
-    </div>
+    </form>
 
-    <!-- JS (Bootstrap) -->
-    <script src="/assets/bs5/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>STT</th>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
+                        <th>Khuyến mại</th>
+                        <th>Tổng tiền sau giảm</th>
+                        <th>Tổng tiền</th>
+                        <th>Ngày</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach((order, index)=> { %>
+                        <tr>
+                            <td>
+                                <%= index + 1 %>
+                            </td>
+                            <td>
+                                <ul>
+                                    <% order.products.forEach(product=> { %>
+                                        <li>
+                                            <%= product.productId && product.productId.name ? product.productId.name
+                                                : 'Sản phẩm đã bị xóa' %>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <% order.products.forEach(product=> { %>
+                                        <li>
+                                            <%= product.quantity %>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <% order.products.forEach(product=> { %>
+                                        <li>
+                                            <%= product.price.toLocaleString() %> VND
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <% order.products.forEach(product=> { %>
+                                        <li>
+                                            <%= product.discountPercentage.toLocaleString() %>%
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <% order.products.forEach(product=> { %>
+                                        <li>
+                                            <%= product.totalProductPrice.toLocaleString() %> VND
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </td>
+                            <td>
+                                <%= order.totalPrice.toLocaleString() %> VND
+                            </td>
+                            <td>
+                                <%= order.createdAt.toLocaleDateString() %>
+                            </td>
+                            <td>
+                                <span class="badge <%= order.status === 'Pending' ? 'bg-warning' : 'bg-success' %>">
+                                    <%= order.status %>
+                                </span>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#date-picker", {
+            dateFormat: "Y-m-d",
+            defaultDate: "<%= typeof date !== 'undefined' ? date : new Date().toISOString().split('T')[0] %>",
+            maxDate: "today",
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                    longhand: [
+                        "Chủ nhật",
+                        "Thứ hai",
+                        "Thứ ba",
+                        "Thứ tư",
+                        "Thứ năm",
+                        "Thứ sáu",
+                        "Thứ bảy",
+                    ],
+                },
+                months: {
+                    shorthand: [
+                        "Th1",
+                        "Th2",
+                        "Th3",
+                        "Th4",
+                        "Th5",
+                        "Th6",
+                        "Th7",
+                        "Th8",
+                        "Th9",
+                        "Th10",
+                        "Th11",
+                        "Th12",
+                    ],
+                    longhand: [
+                        "Tháng 1",
+                        "Tháng 2",
+                        "Tháng 3",
+                        "Tháng 4",
+                        "Tháng 5",
+                        "Tháng 6",
+                        "Tháng 7",
+                        "Tháng 8",
+                        "Tháng 9",
+                        "Tháng 10",
+                        "Tháng 11",
+                        "Tháng 12",
+                    ],
+                },
+            },
+        });
+    });
+</script>

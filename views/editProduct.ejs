@@ -1,69 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <link rel="stylesheet" href="/css/style.css">
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Sửa sản phẩm</h1>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Sửa sản phẩm</h1>
 
-        <form action="/products/<%= product._id %>/edit" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="productCode" class="form-label">Mã sản phẩm:</label>
-                <input type="text" id="productCode" name="productCode" class="form-control" value="<%= product.productCode %>" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="name" class="form-label">Tên sản phẩm:</label>
-                <input type="text" id="name" name="name" class="form-control" value="<%= product.name %>" required>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Mô tả sản phẩm:</label>
-                <textarea id="description" name="description" class="form-control"><%= product.description %></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="price" class="form-label">Giá:</label>
-                <input type="number" id="price" name="price" class="form-control" value="<%= product.price %>" required>
-            </div>
-            <div class="mb-3">
-                <label for="stock" class="form-label">Số lượng:</label>
-                <input type="number" id="stock" name="stock" class="form-control" value="<%= product.stock %>" required>
-            </div>
-            <div class="mb-3">
-                <label for="category" class="form-label">Danh mục:</label>
-                <select id="category" name="category" class="form-select" required>
-                    <% categories.forEach(category => { %>
-                        <option value="<%= category.name %>" <%= product.category === category.name ? 'selected' : '' %>><%= category.name %></option>
+    <form action="/products/<%= product._id %>/edit" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="productCode" class="form-label">Mã sản phẩm:</label>
+            <input type="text" id="productCode" name="productCode" class="form-control"
+                value="<%= product.productCode %>" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Tên sản phẩm:</label>
+            <input type="text" id="name" name="name" class="form-control" value="<%= product.name %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Mô tả sản phẩm:</label>
+            <textarea id="description" name="description" class="form-control"><%= product.description %></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Giá:</label>
+            <input type="number" id="price" name="price" class="form-control" value="<%= product.price %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="stock" class="form-label">Số lượng:</label>
+            <input type="number" id="stock" name="stock" class="form-control" value="<%= product.stock %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Danh mục:</label>
+            <select id="category" name="category" class="form-select" required>
+                <% categories.forEach(category=> { %>
+                    <option value="<%= category.name %>" <%=product.category===category.name ? 'selected' : '' %>><%=
+                            category.name %>
+                    </option>
                     <% }) %>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="unit" class="form-label">Đơn vị sản phẩm:</label>
-                <select id="unit" name="unit" class="form-select" required>
-                    <option value="cái" <%= product.unit === 'cái' ? 'selected' : '' %>>Cái</option>
-                    <option value="hộp" <%= product.unit === 'hộp' ? 'selected' : '' %>>Hộp</option>
-                    <option value="kg" <%= product.unit === 'kg' ? 'selected' : '' %>>Kg</option>
-                    <option value="lít" <%= product.unit === 'lít' ? 'selected' : '' %>>Lít</option>
-                    <option value="mét" <%= product.unit === 'mét' ? 'selected' : '' %>>Mét</option>
-                    <option value="túi" <%= product.unit === 'túi' ? 'selected' : '' %>>Túi</option>
-                    <option value="gói" <%= product.unit === 'gói' ? 'selected' : '' %>>Gói</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Hình ảnh sản phẩm (nếu có):</label>
-                <input type="file" id="image" name="image" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="discountPercentage" class="form-label">Phần trăm giảm giá (%):</label>
-                <input type="number" id="discountPercentage" name="discountPercentage" class="form-control" value="<%= product.discountPercentage %>" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Cập nhật sản phẩm</button>
-            <button type="button" class="btn btn-secondary" onclick="window.location.href = '/products'">Quay lại trang trước</button>
-        </form>
-    </div>
-    <script src="/assets/bs5/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="unit" class="form-label">Đơn vị sản phẩm:</label>
+            <select id="unit" name="unit" class="form-select" required>
+                <option value="cái" <%=product.unit==='cái' ? 'selected' : '' %>>Cái</option>
+                <option value="hộp" <%=product.unit==='hộp' ? 'selected' : '' %>>Hộp</option>
+                <option value="kg" <%=product.unit==='kg' ? 'selected' : '' %>>Kg</option>
+                <option value="lít" <%=product.unit==='lít' ? 'selected' : '' %>>Lít</option>
+                <option value="mét" <%=product.unit==='mét' ? 'selected' : '' %>>Mét</option>
+                <option value="túi" <%=product.unit==='túi' ? 'selected' : '' %>>Túi</option>
+                <option value="gói" <%=product.unit==='gói' ? 'selected' : '' %>>Gói</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Hình ảnh sản phẩm (nếu có):</label>
+            <input type="file" id="image" name="image" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="discountPercentage" class="form-label">Phần trăm giảm giá (%):</label>
+            <input type="number" id="discountPercentage" name="discountPercentage" class="form-control"
+                value="<%= product.discountPercentage %>" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Cập nhật sản phẩm</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href = '/products'">Quay lại trang
+            trước</button>
+    </form>
+</div>
