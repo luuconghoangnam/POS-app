@@ -43,7 +43,9 @@ const upload = multer({
 router.get('/shop', isAuthenticated, canUpdateStore, async (req, res) => {
     try {
         const shop = await Store.findOne();
-        res.render('shop', { shop });
+        res.renderWithLayout('shop', {
+            title: 'Sửa thông tin cửa hàng', shop
+        })
     } catch (error) {
         console.error('Error fetching shop:', error);
         res.status(500).send('Lỗi server');

@@ -4,66 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <style>
-        .container {
-            display: flex;
-        }
-
-        .sidebar {
-            width: 200px;
-            background-color: #2c3e50;
-            color: #fff;
-            height: 100vh;
-            /* Đảm bảo chiều cao full screen */
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding: 20px;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin: 15px 0;
-        }
-
-        .sidebar ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        .main-content {
-            margin-left: 220px;
-            /* Đẩy nội dung qua phải bằng chiều rộng của sidebar */
-            padding: 20px;
-        }
-    </style>
+    <title><%= title %></title>
+    <link href="/assets/bs5/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/icons/cart-shopping-solid.svg" type="image/x-icon">
+    <script src="/assets/swal2/swal2.js"></script>
+    <script src="/assets/jquery/jquery.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <ul>
-                <li><a href="/dashboard">Tổng quan</a></li>
-                <li><a href="/sales">Bán hàng</a></li>
-                <li><a href="/products">Quản lý kho</a></li>
-                <li><a href="/sales/report">Báo cáo - thống kê</a></li>
-                <li><a href="/update-info">Đổi thông tin</a></li>
-                <li><a href="/change-password">Đổi mật khẩu</a></li>
-                <li><a href="/logout">Đăng xuất</a></li>
-                <!-- Thêm các menu khác -->
-            </ul>
-        </div>
+    <%- include('partials/header') %>
 
-        <div class="main-content">
-            <%- body %> <!-- Nơi nội dung trang con sẽ được render -->
-        </div>
-    </div>
+    <div class="space-div"></div>
+
+    <main>
+        <%- body %>
+    </main>
+
+    <%- include('partials/footer') %>
 </body>
+
+<script src="/assets/bs5/bootstrap.bundle.min.js"></script>
 
 </html>

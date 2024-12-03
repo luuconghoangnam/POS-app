@@ -1,0 +1,13 @@
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Chỉnh sửa danh mục</h1>
+
+    <!-- Form chỉnh sửa danh mục -->
+    <form action="/categories/<%= category._id %>/edit" method="POST" class="mb-4">
+        <div class="mb-3">
+            <label for="category" class="form-label">Tên danh mục:</label>
+            <input type="text" id="category" name="category" class="form-control" value="<%= category.name %>" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a href="/products" class="btn btn-secondary ml-2">Hủy bỏ</a>
+    </form>
+</div>

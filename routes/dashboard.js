@@ -6,7 +6,6 @@ const fs = require('fs');
 const path = require('path');
 const Category = require('../models/Category');
 const Revenue = require('../models/Revenue');
-const Customer = require('../models/customer');
 const History = require('../models/history');
 const Store = require('../models/Store');
 const ExportHistory = require('../models/ExportHistory');
@@ -23,7 +22,10 @@ const isAuthenticated = (req, res, next) => {
 
 // Route for the dashboard, only accessible by logged-in users
 router.get('/dashboard', isAuthenticated, (req, res) => {
-    res.render('dashboard', { user: req.session.user });
+    res.renderWithLayout('dashboard', {
+        title: 'Chào mừng',
+        user: req.session.user
+    })
 });
 
 router.get('/sales', isAuthenticated, async (req, res) => {
@@ -61,7 +63,10 @@ router.get('/sales', isAuthenticated, async (req, res) => {
             return product;
         });
 
-        res.render('sales', { products, categories, selectedCategory, store });
+        res.renderWithLayout('sales', {
+            title: 'Bán hàng',
+            products, categories, selectedCategory, store
+        })
     } catch (error) {
         console.error('Lỗi khi lấy sản phẩm:', error);
         res.status(500).send('Lỗi khi lấy sản phẩm');
@@ -211,13 +216,14 @@ router.get('/sales/report', isAuthenticated, async (req, res) => {
             { $sort: { _id: -1 } }
         ]);
 
-        res.render('report', {
+        res.renderWithLayout('report', {
+            title: 'Báo cáo - Thống kê',
             bestSellingProducts,
             lowStockProducts,
             dailyRevenue,
             monthlyRevenue,
             yearlyRevenue
-        });
+        })
     } catch (error) {
         console.error(error);
         res.status(500).send('Lỗi khi lấy thống kê');
@@ -239,7 +245,10 @@ router.get('/sales/history', isAuthenticated, async (req, res) => {
             .populate('products.productId')
             .sort({ createdAt: -1 });
 
-        res.render('history', { orders });
+        res.renderWithLayout('history', {
+            title: 'Lịch sử bán hàng',
+            orders
+        })
     } catch (error) {
         console.error('Lỗi khi lấy lịch sử mua hàng:', error);
         res.status(500).send('Lỗi khi lấy lịch sử mua hàng');
@@ -274,7 +283,10 @@ router.get('/history/search', isAuthenticated, async (req, res) => {
             createdAt: { $gte: startDate, $lte: endDate }
         }).populate('products.productId').sort({ createdAt: -1 });
 
-        res.render('history', { orders, date });
+        res.renderWithLayout('history', {
+            title: 'Lịch sử bán hàng',
+            orders, date
+        })
     } catch (error) {
         console.error('Lỗi khi tìm kiếm lịch sử:', error);
         res.status(500).send('Lỗi khi tìm kiếm lịch sử');
@@ -369,12 +381,12 @@ router.get('/products', isAuthenticated, async (req, res) => {
         const products = await Product.find({ store: store._id });
         const exportHistories = await ExportHistory.find({}).sort({ date: -1 }); // Lấy lịch sử hóa đơn xuất kho, sắp xếp theo ngày giảm dần
 
-        res.render('products', {
+        res.renderWithLayout('products', {
             title: 'Quản lý kho',
             products,
             categories,
-            exportHistories, // Truyền danh sách lịch sử xuất kho vào view
-        });
+            exportHistories,
+        })
     } catch (err) {
         console.error(err);
         res.status(500).send('Lỗi server');
@@ -385,10 +397,10 @@ router.get('/products', isAuthenticated, async (req, res) => {
 router.post('/products/new', isAuthenticated, upload.single('image'), async (req, res) => {
     const user = req.session.user;
     if (!user || (!user.permissions.manageInventory && user.role !== 'admin')) {
-        return res.status(403).send('Bạn không có quyền thực hiện hành động này.');
+        return res.status(403).json({ status: 'error', message: 'Bạn không có quyền thực hiện hành động này.' });
     }
 
-    const { name, description, price, stock, category, discountPercentage } = req.body;
+    const { name, description, price, stock, category, discountPercentage, unit } = req.body;
     let imageUrl = '/images/default.svg';
 
     if (req.file) {
@@ -399,8 +411,31 @@ router.post('/products/new', isAuthenticated, upload.single('image'), async (req
         const store = await Store.findOne();
 
         if (!store) {
-            return res.status(500).send('Store chưa được cấu hình.');
+            return res.status(500).json({ status: 'error', message: 'Store chưa được cấu hình.' });
         }
+
+        // Hàm để bỏ dấu tiếng Việt
+        function removeVietnameseTones(str) {
+            const accentMap = {
+                'á': 'a', 'à': 'a', 'ả': 'a', 'ã': 'a', 'ạ': 'a', 'ă': 'a', 'ắ': 'a', 'ằ': 'a', 'ẳ': 'a', 'ẵ': 'a', 'ặ': 'a',
+                'â': 'a', 'ấ': 'a', 'ầ': 'a', 'ẩ': 'a', 'ẫ': 'a', 'ậ': 'a', 'đ': 'd', 'é': 'e', 'è': 'e', 'ẻ': 'e', 'ẽ': 'e',
+                'ẹ': 'e', 'ê': 'e', 'ế': 'e', 'ề': 'e', 'ể': 'e', 'ễ': 'e', 'ệ': 'e', 'í': 'i', 'ì': 'i', 'ỉ': 'i', 'ĩ': 'i',
+                'ị': 'i', 'ó': 'o', 'ò': 'o', 'ỏ': 'o', 'õ': 'o', 'ọ': 'o', 'ô': 'o', 'ố': 'o', 'ồ': 'o', 'ổ': 'o', 'ỗ': 'o',
+                'ộ': 'o', 'ơ': 'o', 'ớ': 'o', 'ờ': 'o', 'ở': 'o', 'ỡ': 'o', 'ợ': 'o', 'ú': 'u', 'ù': 'u', 'ủ': 'u', 'ũ': 'u',
+                'ụ': 'u', 'ư': 'u', 'ứ': 'u', 'ừ': 'u', 'ử': 'u', 'ữ': 'u', 'ự': 'u', 'ý': 'y', 'ỳ': 'y', 'ỷ': 'y', 'ỹ': 'y',
+                'ỵ': 'y', 'Ạ': 'A', 'Á': 'A', 'À': 'A', 'Ả': 'A', 'Ã': 'A', 'Ă': 'A', 'Ắ': 'A', 'Ằ': 'A', 'Ẳ': 'A', 'Ẵ': 'A',
+                'Ặ': 'A', 'Â': 'A', 'Ấ': 'A', 'Ầ': 'A', 'Ẩ': 'A', 'Ẫ': 'A', 'Ậ': 'A', 'Đ': 'D', 'É': 'E', 'È': 'E', 'Ẻ': 'E',
+                'Ẽ': 'E', 'Ẹ': 'E', 'Ê': 'E', 'Ế': 'E', 'Ề': 'E', 'Ể': 'E', 'Ễ': 'E', 'Ệ': 'E', 'Í': 'I', 'Ì': 'I', 'Ỉ': 'I',
+                'Ĩ': 'I', 'Ị': 'I', 'Ó': 'O', 'Ò': 'O', 'Ỏ': 'O', 'Õ': 'O', 'Ọ': 'O', 'Ô': 'O', 'Ố': 'O', 'Ồ': 'O', 'Ổ': 'O',
+                'Ỗ': 'O', 'Ộ': 'O', 'Ơ': 'O', 'Ớ': 'O', 'Ờ': 'O', 'Ở': 'O', 'Ỡ': 'O', 'Ợ': 'O', 'Ú': 'U', 'Ù': 'U', 'Ủ': 'U',
+                'Ũ': 'U', 'Ụ': 'U', 'Ư': 'U', 'Ứ': 'U', 'Ừ': 'U', 'Ử': 'U', 'Ữ': 'U', 'Ự': 'U', 'Ý': 'Y', 'Ỳ': 'Y', 'Ỷ': 'Y',
+                'Ỹ': 'Y', 'Ỵ': 'Y'
+            };
+            return str.split('').map(char => accentMap[char] || char).join('');
+        }
+
+        // Tạo mã sản phẩm tự động
+        const productCode = `${removeVietnameseTones(name.slice(0, 3)).toUpperCase()}-${Math.floor(Math.random() * 10000)}`;
 
         const newProduct = new Product({
             name,
@@ -411,13 +446,19 @@ router.post('/products/new', isAuthenticated, upload.single('image'), async (req
             category,
             store: store._id,
             discountPercentage: discountPercentage || 0,
+            productCode,
+            unit, 
         });
 
         await newProduct.save();
-        res.redirect('/products');
+        res.status(200).json({
+            status: 'success',
+            message: 'Sản phẩm đã được thêm thành công.',
+            product: newProduct
+        });
     } catch (err) {
         console.error(err);
-        res.status(500).send('Lỗi khi thêm sản phẩm');
+        res.status(500).json({ status: 'error', message: 'Lỗi khi thêm sản phẩm' });
     }
 });
 
@@ -437,18 +478,27 @@ router.post('/products/:id/delete', isAuthenticated, async (req, res) => {
             return res.status(404).send('Sản phẩm không tồn tại');
         }
 
+        // Kiểm tra xem ảnh có phải là ảnh mặc định không
         const imagePath = path.join(__dirname, '..', product.imageUrl);
+        
+        // Nếu ảnh không phải là ảnh mặc định, thực hiện xóa
+        if (product.imageUrl !== '/images/default.svg') {
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error('Lỗi khi xóa file:', err);
+                    return res.status(500).send('Lỗi khi xóa ảnh');
+                }
 
+                console.log('Xóa ảnh thành công');
+            });
+        } else {
+            console.log('Ảnh mặc định, không cần xóa.');
+        }
+
+        // Xóa sản phẩm khỏi cơ sở dữ liệu
         await Product.deleteOne({ _id: id });
 
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Lỗi khi xóa file:', err);
-                return res.status(500).send('Lỗi khi xóa ảnh');
-            }
-
-            res.redirect('/products');
-        });
+        res.redirect('/products');
     } catch (err) {
         console.error(err);
         res.status(500).send('Lỗi khi xóa sản phẩm');
@@ -478,7 +528,9 @@ router.get('/products/:id/edit', isAuthenticated, async (req, res) => {
             return res.status(404).send('Sản phẩm không tồn tại');
         }
 
-        res.render('editProduct', { title: 'Sửa sản phẩm', product, categories });
+        res.renderWithLayout('editProduct', {
+            title: 'Sửa sản phẩm', product, categories
+        })
     } catch (err) {
         console.error(err);
         res.status(500).send('Lỗi khi lấy sản phẩm');
@@ -492,15 +544,37 @@ router.post('/products/:id/edit', isAuthenticated, upload.single('image'), async
         return res.status(403).send('Bạn không có quyền thực hiện hành động này.');
     }
 
-    const { name, description, price, stock, category, discountPercentage } = req.body;
-    let updatedProduct = { name, description, price, stock, category, discountPercentage };
+    // Lấy dữ liệu từ form
+    const { name, description, price, stock, category, unit, discountPercentage } = req.body;
 
+    // Tạo object cập nhật sản phẩm
+    let updatedProduct = { 
+        name, 
+        description, 
+        price, 
+        stock, 
+        category, 
+        unit,  // Cập nhật đơn vị sản phẩm
+        discountPercentage 
+    };
+
+    // Kiểm tra nếu có hình ảnh mới, cập nhật đường dẫn hình ảnh
     if (req.file) {
         updatedProduct.imageUrl = `/uploads/${req.file.filename}`;
     }
 
     try {
+        // Tìm và cập nhật sản phẩm
+        const product = await Product.findById(req.params.id);
+
+        if (!product) {
+            return res.status(404).send('Sản phẩm không tồn tại');
+        }
+
+        // Cập nhật sản phẩm
         await Product.findByIdAndUpdate(req.params.id, updatedProduct);
+
+        // Chuyển hướng về danh sách sản phẩm
         res.redirect('/products');
     } catch (err) {
         console.error(err);
@@ -519,6 +593,10 @@ router.post('/categories/new', isAuthenticated, async (req, res) => {
 
     if (!category) {
         return res.status(400).send('Tên danh mục không hợp lệ');
+    }
+
+    if (category.trim().toLowerCase() === 'tất cả') {
+        return res.status(400).send('Không thể tạo danh mục với tên "Tất cả"');
     }
 
     try {
@@ -543,6 +621,70 @@ router.post('/categories/new', isAuthenticated, async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Lỗi khi thêm danh mục');
+    }
+});
+
+// Route để chỉnh sửa danh mục
+router.get('/categories/:id/edit', isAuthenticated, async (req, res) => {
+    const user = req.session.user;
+    if (!user || (!user.permissions.manageInventory && user.role !== 'admin')) {
+        return res.status(403).send('Bạn không có quyền thực hiện hành động này.');
+    }
+
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+        return res.status(404).send('Danh mục không tồn tại');
+    }
+
+    res.renderWithLayout('editCategory', {
+        title: 'Sửa danh mục sản phẩm',
+        category
+    })
+});
+
+// Route để cập nhật danh mục
+router.post('/categories/:id/edit', isAuthenticated, async (req, res) => {
+    const user = req.session.user;
+    if (!user || (!user.permissions.manageInventory && user.role !== 'admin')) {
+        return res.status(403).send('Bạn không có quyền thực hiện hành động này.');
+    }
+
+    const { category } = req.body;
+    if (!category) {
+        return res.status(400).send('Tên danh mục không hợp lệ');
+    }
+
+    if (category.trim().toLowerCase() === 'tất cả') {
+        return res.status(400).send('Không thể thay đổi tên danh mục thành "Tất cả"');
+    }
+
+    try {
+        const existingCategory = await Category.findOne({ name: category });
+        if (existingCategory) {
+            return res.status(400).send('Danh mục đã tồn tại');
+        }
+
+        const updatedCategory = await Category.findByIdAndUpdate(req.params.id, { name: category }, { new: true });
+        res.redirect('/products');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Lỗi khi cập nhật danh mục');
+    }
+});
+
+// Route để xóa danh mục
+router.post('/categories/:id/delete', isAuthenticated, async (req, res) => {
+    const user = req.session.user;
+    if (!user || (!user.permissions.manageInventory && user.role !== 'admin')) {
+        return res.status(403).send('Bạn không có quyền thực hiện hành động này.');
+    }
+
+    try {
+        await Category.findByIdAndDelete(req.params.id);
+        res.redirect('/products');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Lỗi khi xóa danh mục');
     }
 });
 
@@ -581,6 +723,8 @@ router.post('/products/export', async (req, res) => {
             exportDetails.push({
                 productId: updatedProduct._id,
                 productName: updatedProduct.name,
+                productCode: updatedProduct.productCode || 'Chưa có mã sản phẩm',
+                unit: updatedProduct.unit || 'Chưa có đơn vị',
                 quantity,
                 price: updatedProduct.price,
                 total: updatedProduct.price * quantity
@@ -604,7 +748,11 @@ router.post('/products/export', async (req, res) => {
             receiptId: exportHistory._id,
             date: exportHistory.date,
             totalQuantity,
-            exportedProducts: exportDetails // Mảng sản phẩm đã xuất
+            exportedProducts: exportDetails.map(product => ({
+                ...product,
+                productCode: product.productCode,
+                unit: product.unit
+            }))
         });
     } catch (error) {
         console.error('Lỗi khi xuất kho:', error.message);
@@ -637,76 +785,128 @@ const uploadExcel = multer({
     dest: path.join(__dirname, '../uploads'),
 });
 
+function removeVietnameseTones(str) {
+    const accentMap = {
+        'á': 'a', 'à': 'a', 'ả': 'a', 'ã': 'a', 'ạ': 'a', 'ă': 'a', 'ắ': 'a', 'ằ': 'a', 'ẳ': 'a', 'ẵ': 'a', 'ặ': 'a',
+        'â': 'a', 'ấ': 'a', 'ầ': 'a', 'ẩ': 'a', 'ẫ': 'a', 'ậ': 'a', 'đ': 'd', 'é': 'e', 'è': 'e', 'ẻ': 'e', 'ẽ': 'e',
+        'ẹ': 'e', 'ê': 'e', 'ế': 'e', 'ề': 'e', 'ể': 'e', 'ễ': 'e', 'ệ': 'e', 'í': 'i', 'ì': 'i', 'ỉ': 'i', 'ĩ': 'i',
+        'ị': 'i', 'ó': 'o', 'ò': 'o', 'ỏ': 'o', 'õ': 'o', 'ọ': 'o', 'ô': 'o', 'ố': 'o', 'ồ': 'o', 'ổ': 'o', 'ỗ': 'o',
+        'ộ': 'o', 'ơ': 'o', 'ớ': 'o', 'ờ': 'o', 'ở': 'o', 'ỡ': 'o', 'ợ': 'o', 'ú': 'u', 'ù': 'u', 'ủ': 'u', 'ũ': 'u',
+        'ụ': 'u', 'ư': 'u', 'ứ': 'u', 'ừ': 'u', 'ử': 'u', 'ữ': 'u', 'ự': 'u', 'ý': 'y', 'ỳ': 'y', 'ỷ': 'y', 'ỹ': 'y',
+        'ỵ': 'y', 'Ạ': 'A', 'Á': 'A', 'À': 'A', 'Ả': 'A', 'Ã': 'A', 'Ă': 'A', 'Ắ': 'A', 'Ằ': 'A', 'Ẳ': 'A', 'Ẵ': 'A',
+        'Ặ': 'A', 'Â': 'A', 'Ấ': 'A', 'Ầ': 'A', 'Ẩ': 'A', 'Ẫ': 'A', 'Ậ': 'A', 'Đ': 'D', 'É': 'E', 'È': 'E', 'Ẻ': 'E',
+        'Ẽ': 'E', 'Ẹ': 'E', 'Ê': 'E', 'Ế': 'E', 'Ề': 'E', 'Ể': 'E', 'Ễ': 'E', 'Ệ': 'E', 'Í': 'I', 'Ì': 'I', 'Ỉ': 'I',
+        'Ĩ': 'I', 'Ị': 'I', 'Ó': 'O', 'Ò': 'O', 'Ỏ': 'O', 'Õ': 'O', 'Ọ': 'O', 'Ô': 'O', 'Ố': 'O', 'Ồ': 'O', 'Ổ': 'O',
+        'Ỗ': 'O', 'Ộ': 'O', 'Ơ': 'O', 'Ớ': 'O', 'Ờ': 'O', 'Ở': 'O', 'Ỡ': 'O', 'Ợ': 'O', 'Ú': 'U', 'Ù': 'U', 'Ủ': 'U',
+        'Ũ': 'U', 'Ụ': 'U', 'Ư': 'U', 'Ứ': 'U', 'Ừ': 'U', 'Ử': 'U', 'Ữ': 'U', 'Ự': 'U', 'Ý': 'Y', 'Ỳ': 'Y', 'Ỷ': 'Y',
+        'Ỹ': 'Y', 'Ỵ': 'Y'
+    };
+    return str.split('').map(char => accentMap[char] || char).join('');
+}
+
+// Tạo mã sản phẩm tự động (ví dụ: mã sản phẩm = tên sản phẩm + số ngẫu nhiên)
+function generateProductCode(name) {
+    return `${removeVietnameseTones(name.slice(0, 3)).toUpperCase()}-${Math.floor(Math.random() * 10000)}`;
+}
+
 // Route nhập sản phẩm bằng file Excel
 router.post('/products/import-excel', uploadExcel.single('excelFile'), async (req, res) => {
     try {
         if (!req.file) {
-            return res.status(400).send('Vui lòng tải lên file Excel.');
+            return res.status(400).json({ status: 'error', message: 'Vui lòng tải lên file Excel.' });
         }
 
-        // Đọc file Excel
         const workbook = xlsx.readFile(req.file.path);
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
         const products = xlsx.utils.sheet_to_json(sheet);
 
-        // Lấy thông tin store mặc định (giả định store đã được cấu hình)
         const store = await Store.findOne();
         if (!store) {
-            return res.status(500).send('Store chưa được cấu hình. Vui lòng cấu hình trước.');
+            return res.status(500).json({ status: 'error', message: 'Store chưa được cấu hình. Vui lòng cấu hình trước.' });
         }
 
-        // Kiểm tra và tạo danh mục "Tất cả" nếu chưa có
-        let defaultCategory = await Category.findOne({ name: 'Tất cả' });
-        if (!defaultCategory) {
-            defaultCategory = new Category({ name: 'Tất cả', store: store._id });
-            await defaultCategory.save();
-        }
+        let importedCount = 0;
+        let errorCount = 0;
+        let errorDetails = [];
 
         for (const product of products) {
-            const { name, description, price, stock, category, discountPercentage } = product;
+            let { productCode, name, description, price, stock, category, unit, discountPercentage } = product;
+            const missingFields = [];
 
-            // Kiểm tra dữ liệu cơ bản
-            if (!name || !price || !stock) {
-                console.log(`Bỏ qua sản phẩm không đầy đủ thông tin: ${JSON.stringify(product)}`);
+            if (!name) missingFields.push('Tên sản phẩm');
+            if (!price) missingFields.push('Giá');
+            if (!stock) missingFields.push('Số lượng');
+            if (!unit) missingFields.push('Đơn vị');
+            if (isNaN(price)) missingFields.push('Giá (phải là số)');
+            if (isNaN(stock)) missingFields.push('Số lượng (phải là số)');
+
+            if (missingFields.length > 0) {
+                errorDetails.push({ product, missingFields });
+                errorCount++;
                 continue;
             }
 
-            // Nếu không có danh mục, gán mặc định là "Tất cả"
-            const finalCategory = category?.trim() || 'Tất cả';
+            if (!productCode) {
+                productCode = generateProductCode(name);
+            }
 
-            // Kiểm tra danh mục có tồn tại hay không
+            const validUnits = ['cái', 'hộp', 'kg', 'lít', 'mét', 'túi', 'gói'];
+            const finalUnit = validUnits.includes(unit.trim()) ? unit.trim() : 'cái';
+
+            const finalCategory = category?.trim() || 'Chưa phân loại';
             let categoryData = await Category.findOne({ name: finalCategory });
             if (!categoryData) {
-                console.log(`Danh mục không tồn tại, tạo mới danh mục: ${finalCategory}`);
                 categoryData = new Category({ name: finalCategory, store: store._id });
                 await categoryData.save();
             }
 
-            // Tạo sản phẩm mới
-            const newProduct = new Product({
-                name,
-                description: description || '',
-                price: parseFloat(price),
-                stock: parseInt(stock),
-                category: categoryData.name,
-                discountPercentage: discountPercentage ? parseFloat(discountPercentage) : 0,
-                imageUrl: '/images/default.svg', // Hình ảnh mặc định
-                store: store._id, // Liên kết sản phẩm với cửa hàng
-            });
+            let existingProduct = await Product.findOne({ productCode });
+            if (existingProduct) {
+                existingProduct.stock += parseInt(stock);
+                await existingProduct.save();
+                importedCount++;
+            } else {
+                const newProduct = new Product({
+                    productCode,
+                    name,
+                    description: description || '',
+                    price: parseFloat(price),
+                    stock: parseInt(stock),
+                    category: categoryData.name,
+                    unit: finalUnit,
+                    discountPercentage: discountPercentage ? parseFloat(discountPercentage) : 0,
+                    imageUrl: '/images/default.svg',
+                    store: store._id,
+                });
 
-            await newProduct.save();
+                await newProduct.save();
+                importedCount++;
+            }
         }
 
-        // Xóa file Excel sau khi xử lý
         fs.unlink(req.file.path, (err) => {
             if (err) console.error('Lỗi khi xóa file:', err);
         });
 
-        res.redirect('/products');
+        if (importedCount > 0 || errorCount > 0) {
+            res.status(200).json({
+                status: 'success',
+                message: `${importedCount} sản phẩm đã được nhập thành công.`,
+                errorCount,
+                errorDetails: errorDetails.length > 0 ? errorDetails : [] // Đảm bảo luôn trả về errorDetails
+            });
+        } else {
+            res.status(400).json({
+                status: 'error',
+                message: 'Không có sản phẩm nào được nhập.',
+                errorCount,
+                errorDetails: errorDetails.length > 0 ? errorDetails : [] // Đảm bảo luôn trả về errorDetails
+            });
+        }
     } catch (error) {
         console.error('Lỗi khi nhập sản phẩm từ Excel:', error.message);
-        res.status(500).send('Lỗi khi nhập sản phẩm từ Excel.');
+        res.status(500).json({ status: 'error', message: 'Lỗi khi nhập sản phẩm từ Excel.' });
     }
 });
 

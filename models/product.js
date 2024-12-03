@@ -9,10 +9,20 @@ const productSchema = new mongoose.Schema({
     imageUrl: { type: String, required: true },
     store: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
     createdAt: { type: Date, default: Date.now },
-    category: String,
-    discountPercentage: { type: Number, default: 0 }, // Phần trăm giảm giá
-    discountStartDate: { type: Date }, // Ngày bắt đầu khuyến mãi
-    discountEndDate: { type: Date }   // Ngày kết thúc khuyến mãi
+    category: { type: String },
+    discountPercentage: { type: Number, default: 0 },
+    discountStartDate: { type: Date },
+    discountEndDate: { type: Date },
+    
+    // Mã sản phẩm
+    productCode: { type: String, required: true, unique: true },
+
+    // Đơn vị sản phẩm
+    unit: { 
+        type: String, 
+        enum: ['cái', 'hộp', 'kg', 'lít', 'mét', 'túi', 'gói'],
+        required: true 
+    }
 });
 
 module.exports = mongoose.model('Product', productSchema);

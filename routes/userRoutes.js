@@ -212,7 +212,7 @@ router.post('/update-info', async (req, res) => {
 
 router.get('/update-info', async (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/login'); // Redirect to login if no user is in session
+        return res.redirect('/login');
     }
 
     try {
@@ -222,32 +222,9 @@ router.get('/update-info', async (req, res) => {
             return res.status(404).send('User not found');
         }
 
-        // Render the view and pass the user object to the EJS template
-        res.render('updateInfo', { user });
-    } catch (err) {
-        console.error('Error fetching user:', err);
-        res.status(500).send('Error loading user info');
-    }
-});
-
-// Route to display user information for updating
-router.get('/update-info', async (req, res) => {
-    // Check if the user is logged in (session has user data)
-    if (!req.session.user) {
-        return res.redirect('/login'); // Redirect to login if no user is in session
-    }
-
-    try {
-        // Fetch the user data from the database using the user ID stored in the session
-        const user = await User.findById(req.session.user.id);
-
-        // If user not found, handle the case
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-
-        // Render the view and pass the user object to the EJS template
-        res.render('updateInfo', { user });
+        res.renderWithLayout('updateInfo', {
+            title: 'Cập nhật thông tin', user
+        })
     } catch (err) {
         console.error('Error fetching user:', err);
         res.status(500).send('Error loading user info');
@@ -293,7 +270,9 @@ router.get('/change-password', (req, res) => {
         return res.redirect('/login');
     }
     // If the user is logged in, render the change password form
-    res.render('changePassword', { title: 'Đổi mật khẩu' });
+    res.renderWithLayout('changePassword', {
+        title: 'Đổi mật khẩu'
+    })
 });
 
 // Gửi mã xác thực email và lưu vào MongoDB

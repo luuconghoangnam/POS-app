@@ -13,8 +13,10 @@ function isAdmin(req, res, next) {
 // Hiển thị danh sách người dùng
 router.get('/admin/users', isAdmin, async (req, res) => {
     try {
-        const users = await User.find({ _id: { $ne: req.session.user.id } }); // Loại bỏ chính admin
-        res.render('users', { users });
+        const users = await User.find({ _id: { $ne: req.session.user.id } });
+        res.renderWithLayout('users', {
+            title: 'Quản lý người dùng', users
+        })
     } catch (error) {
         console.error('Error fetching users:', error);
         res.status(500).send('Lỗi server');
