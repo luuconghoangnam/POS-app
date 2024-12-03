@@ -329,3 +329,10 @@ function processCheckout() {
 $('.add-to-cart').click(function () {
     $('#cart-items').append('<li class="list-group-item">Sản phẩm mới</li>').hide().slideDown();
 });
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'F2') {
+        event.preventDefault();
+       document.getElementById('checkout-btn').click();
+    }
+});
