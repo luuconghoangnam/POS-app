@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                                 <div class="invoice-info">
                                     <p><strong>Mã hóa đơn:</strong> ${invoiceData._id}</p>
-                                    <p><strong>Ngày:</strong> ${new Date(invoiceData.date).toLocaleString()}</p>
+                                    <p><strong>Ngày:</strong> ${new Date(invoiceData.date).toLocaleDateString('vi-VN')} ${new Date(invoiceData.date).toLocaleTimeString('vi-VN')}</p>
                                     <p><strong>Tổng số lượng xuất:</strong> ${invoiceData.totalQuantity}</p>
                                 </div>
                     
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                             <div class="invoice-info">
                                 <p><strong>Mã hóa đơn:</strong> ${invoiceData._id}</p>
-                                <p><strong>Ngày:</strong> ${new Date(invoiceData.date).toLocaleString()}</p>
+                                <p><strong>Ngày:</strong> ${new Date(invoiceData.date).toLocaleDateString('vi-VN')} ${new Date(invoiceData.date).toLocaleTimeString('vi-VN')}</p>
                                 <p><strong>Tổng số lượng xuất:</strong> ${invoiceData.totalQuantity}</p>
                             </div>
                 
