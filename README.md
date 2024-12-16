@@ -144,8 +144,8 @@ git push origin feature/your-feature-name
 
 Nếu bạn có bất kỳ thắc mắc nào, vui lòng liên hệ:
 
-- Email: hoaphamduc2399@gmail.com
-- Email: luuconghn.lamcong.contacts@gmail.com
+- Email: hoaphamduc2399@gmail.com (Backend-Dev)
+- Email: luuconghn.lamcong.contacts@gmail.com (Frontend-Dev)
 - GitHub: [Github](https://github.com/hoaphamduc/mini-supermarket)
 - GitHub: [Github](https://github.com/luuconghoangnam/POS-app)
 
