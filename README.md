@@ -46,8 +46,8 @@
 ## 📦 Cài đặt & khởi chạy
 ### 1. Clone dự án
 ```bash
-git clone https://github.com/hoaphamduc/mini-supermarket.git
-cd mini-supermarket
+git clone https://github.com/luuconghoangnam/POS-app.git
+cd POS-app
 ```
 
 ### 2. Cài đặt các package cần thiết
