@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "67432c0911315874c24399fd"
+  },
+  "name": "Mocchi",
+  "description": "Thương hiệu: Quanzhensi Cake\r\nXuất xứ: Trung Quốc đại lục / tỉnh Phúc Kiến / thành phố Tuyền Châu\r\nXuất xứ: tỉnh Phúc Kiến\r\nNgày sản xuất: 2023-09-09\r\nThời hạn sử dụng: 90 ngày\r\nSố giấy phép sản xuất thực phẩm: SC12435050400271\r\nSố tiêu chuẩn sản phẩm: GB / T20977\r\nTên nhà máy: Fujian Tuyền Châu Si Cake Food Co., Ltd.\r\nĐịa chỉ nhà máy: Không. 18-15, Đường Dương Sơn, Đường Shuangyang, Quận Lạc Giang, Thành phố Tuyền Châu, Tỉnh Phúc Kiến",
+  "price": 141000,
+  "stock": 965,
+  "sold": 34,
+  "imageUrl": "/uploads/1732455433964.webp",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "category": "Đồ ăn nhanh",
+  "discountPercentage": 10,
+  "createdAt": {
+    "$date": "2024-11-24T13:37:13.989Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "storeName": "ONE",
+  "storeAddress": "136 Xuân Thủy Cầu Giấy Hà Nội",
+  "qrCodeImageUrl": "/uploads/065580e82f92a26fe7e4efd40618ceb9",
+  "bankAccountNumber": "106873855116",
+  "bankName": "VietinBank",
+  "createdAt": {
+    "$date": "2024-11-23T11:13:15.466Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-23T11:13:15.466Z"
+  },
+  "__v": 0
+}]

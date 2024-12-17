@@ -1,0 +1,248 @@
+[{
+  "_id": {
+    "$oid": "6741bc963fbd247717bf67ec"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "quantity": 1,
+      "price": 400000,
+      "discountPercentage": 0,
+      "totalProductPrice": 400000,
+      "_id": {
+        "$oid": "6741bc963fbd247717bf67ed"
+      }
+    }
+  ],
+  "totalPrice": 400000,
+  "status": "Done",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "createdAt": {
+    "$date": "2024-11-23T11:29:26.865Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-23T11:29:26.865Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742c4889479160e0f969fe3"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "quantity": 6,
+      "price": 400000,
+      "discountPercentage": 0,
+      "totalProductPrice": 2400000,
+      "_id": {
+        "$oid": "6742c4889479160e0f969fe4"
+      }
+    }
+  ],
+  "totalPrice": 2400000,
+  "status": "Done",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "createdAt": {
+    "$date": "2024-11-24T06:15:36.923Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T06:15:36.923Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742c4c59479160e0f96a00a"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "quantity": 1,
+      "price": 400000,
+      "discountPercentage": 0,
+      "totalProductPrice": 400000,
+      "_id": {
+        "$oid": "6742c4c59479160e0f96a00b"
+      }
+    }
+  ],
+  "totalPrice": 400000,
+  "status": "Done",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "createdAt": {
+    "$date": "2024-11-24T06:16:37.103Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T06:16:37.103Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742c7849479160e0f96a022"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6742c4629479160e0f969fd7"
+      },
+      "quantity": 4,
+      "price": 6,
+      "discountPercentage": 0,
+      "totalProductPrice": 24,
+      "_id": {
+        "$oid": "6742c7849479160e0f96a023"
+      }
+    }
+  ],
+  "totalPrice": 24,
+  "status": "Done",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "createdAt": {
+    "$date": "2024-11-24T06:28:20.300Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T06:28:20.300Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742c79e9479160e0f96a02c"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6742c4629479160e0f969fd7"
+      },
+      "quantity": 1,
+      "price": 6,
+      "discountPercentage": 0,
+      "totalProductPrice": 6,
+      "_id": {
+        "$oid": "6742c79e9479160e0f96a02d"
+      }
+    }
+  ],
+  "totalPrice": 6,
+  "status": "Done",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "createdAt": {
+    "$date": "2024-11-24T06:28:46.976Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T06:28:46.976Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742cd0c9479160e0f96a0a9"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "quantity": 4,
+      "price": 400000,
+      "discountPercentage": 0,
+      "totalProductPrice": 1600000,
+      "_id": {
+        "$oid": "6742cd0c9479160e0f96a0aa"
+      }
+    }
+  ],
+  "totalPrice": 1600000,
+  "status": "Done",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "createdAt": {
+    "$date": "2024-11-24T06:51:56.783Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T06:51:56.783Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6744204ed4007466b48082e3"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "67432c0911315874c24399fd"
+      },
+      "quantity": 31,
+      "price": 141000,
+      "discountPercentage": 10,
+      "totalProductPrice": 3933900,
+      "_id": {
+        "$oid": "6744204ed4007466b48082e4"
+      }
+    }
+  ],
+  "totalPrice": 3933900,
+  "status": "Done",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "createdAt": {
+    "$date": "2024-11-25T06:59:26.531Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-25T06:59:26.531Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674491a30de5feb9fdd9f4fd"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "67432c0911315874c24399fd"
+      },
+      "quantity": 3,
+      "price": 141000,
+      "discountPercentage": 10,
+      "totalProductPrice": 380700,
+      "_id": {
+        "$oid": "674491a30de5feb9fdd9f4fe"
+      }
+    }
+  ],
+  "totalPrice": 380700,
+  "status": "Done",
+  "store": {
+    "$oid": "6741b8cb3fbd247717bf6790"
+  },
+  "createdAt": {
+    "$date": "2024-11-25T15:02:59.770Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-25T15:02:59.770Z"
+  },
+  "__v": 0
+}]

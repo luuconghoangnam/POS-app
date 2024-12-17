@@ -1,0 +1,168 @@
+[{
+  "_id": {
+    "$oid": "6742cfa69479160e0f96a111"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "productName": "Ferrari FXXK Evo Tỷ Lệ 1:24",
+      "quantity": 2,
+      "price": 400000,
+      "total": 800000,
+      "_id": {
+        "$oid": "6742cfa69479160e0f96a112"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "6742c4629479160e0f969fd7"
+      },
+      "productName": "từgsdf",
+      "quantity": 1,
+      "price": 6,
+      "total": 6,
+      "_id": {
+        "$oid": "6742cfa69479160e0f96a113"
+      }
+    }
+  ],
+  "totalQuantity": 3,
+  "date": {
+    "$date": "2024-11-24T07:03:02.870Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742d4d89479160e0f96a11a"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "productName": "Ferrari FXXK Evo Tỷ Lệ 1:24",
+      "quantity": 2,
+      "price": 400000,
+      "total": 800000,
+      "_id": {
+        "$oid": "6742d4d89479160e0f96a11b"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "6742c4629479160e0f969fd7"
+      },
+      "productName": "từgsdf",
+      "quantity": 1,
+      "price": 6,
+      "total": 6,
+      "_id": {
+        "$oid": "6742d4d89479160e0f96a11c"
+      }
+    }
+  ],
+  "totalQuantity": 3,
+  "date": {
+    "$date": "2024-11-24T07:25:12.807Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742d5cf9479160e0f96a148"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "productName": "Ferrari FXXK Evo Tỷ Lệ 1:24",
+      "quantity": 1,
+      "price": 400000,
+      "total": 400000,
+      "_id": {
+        "$oid": "6742d5cf9479160e0f96a149"
+      }
+    }
+  ],
+  "totalQuantity": 1,
+  "date": {
+    "$date": "2024-11-24T07:29:19.414Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742d5ff9479160e0f96a14c"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "productName": "Ferrari FXXK Evo Tỷ Lệ 1:24",
+      "quantity": 2,
+      "price": 400000,
+      "total": 800000,
+      "_id": {
+        "$oid": "6742d5ff9479160e0f96a14d"
+      }
+    }
+  ],
+  "totalQuantity": 2,
+  "date": {
+    "$date": "2024-11-24T07:30:07.970Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742d6719479160e0f96a15d"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "productName": "Ferrari FXXK Evo Tỷ Lệ 1:24",
+      "quantity": 1,
+      "price": 400000,
+      "total": 400000,
+      "_id": {
+        "$oid": "6742d6719479160e0f96a15e"
+      }
+    }
+  ],
+  "totalQuantity": 1,
+  "date": {
+    "$date": "2024-11-24T07:32:01.554Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742db3b9479160e0f96a184"
+  },
+  "products": [
+    {
+      "productId": {
+        "$oid": "6741ba403fbd247717bf67c9"
+      },
+      "productName": "Ferrari FXXK Evo Tỷ Lệ 1:24",
+      "quantity": 2,
+      "price": 400000,
+      "total": 800000,
+      "_id": {
+        "$oid": "6742db3b9479160e0f96a185"
+      }
+    }
+  ],
+  "totalQuantity": 2,
+  "date": {
+    "$date": "2024-11-24T07:52:27.643Z"
+  },
+  "__v": 0
+}]

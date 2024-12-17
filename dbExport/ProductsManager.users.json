@@ -1,0 +1,120 @@
+[{
+  "_id": {
+    "$oid": "6741b3b43c9fac58cac6a7df"
+  },
+  "username": "123456",
+  "password": "$2a$10$QkvFzn5bnS1bAp8hiKBDX.tFmKbqtUhiHrmtVBAow8cnNTY8rnu4q",
+  "role": "user",
+  "phone": "0796049711",
+  "email": "luuconghn.lamcong.contacts@gmail.com",
+  "country": "Vietnam",
+  "city": "Nam Định",
+  "permissions": {
+    "manageInventory": false,
+    "sellProducts": false,
+    "updateStoreInfo": false
+  },
+  "createdAt": {
+    "$date": "2024-11-23T10:51:32.531Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-16T11:45:29.497Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742b76ddc79a1f0040031ae"
+  },
+  "username": "LuuLamCong2",
+  "password": "$2a$10$.GJRG5zKcuqP55NilYbkEuO/DUK.xHFCVz4iVwF44.n.dCG1mC5Ya",
+  "role": "admin",
+  "phone": "0796049711",
+  "email": "congll.a8k46gtb@gmail.com",
+  "country": "Vietnam",
+  "city": "Nam Định",
+  "permissions": {
+    "manageInventory": true,
+    "sellProducts": true,
+    "updateStoreInfo": true
+  },
+  "createdAt": {
+    "$date": "2024-11-24T05:19:41.611Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T08:01:38.056Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742de0d9479160e0f96a301"
+  },
+  "username": "NgoTienDat",
+  "password": "$2a$10$yZb/K3vngertM3bi.bFP8.L.qsldNObi5IZO13h.02L0GLCjyPMke",
+  "role": "user",
+  "phone": "0899905411",
+  "email": "nntrungtb2003@gmail.com",
+  "country": "Vietnam",
+  "city": "Bình Phước",
+  "permissions": {
+    "manageInventory": false,
+    "sellProducts": false,
+    "updateStoreInfo": false
+  },
+  "createdAt": {
+    "$date": "2024-11-24T08:04:29.911Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T08:08:19.295Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742de699479160e0f96a30c"
+  },
+  "username": "TaiKhoan2",
+  "password": "$2a$10$H4isBGE3wE1DIZ9KcDaBn.LUOVNmUaXiizQWQAiJjcnALwzWG70mu",
+  "role": "admin",
+  "phone": "0899905411",
+  "email": "stu715105251@hnue.edu.vn",
+  "country": "Vietnam",
+  "city": "Bình Thuận",
+  "permissions": {
+    "manageInventory": false,
+    "sellProducts": false,
+    "updateStoreInfo": false
+  },
+  "createdAt": {
+    "$date": "2024-11-24T08:06:01.365Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T08:08:18.016Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6742dec29479160e0f96a31b"
+  },
+  "username": "TaiKhoan3",
+  "password": "$2a$10$fSUDSynjpS5ELNZhGQR09.lq2mDHCrb0Jnf7K35uxV7ih.yqUCGxG",
+  "role": "admin",
+  "phone": "0899905411",
+  "email": "lophocamsatss5@gmail.com",
+  "country": "Vietnam",
+  "city": "Bình Thuận",
+  "permissions": {
+    "manageInventory": false,
+    "sellProducts": false,
+    "updateStoreInfo": false
+  },
+  "createdAt": {
+    "$date": "2024-11-24T08:07:30.830Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-24T08:08:16.726Z"
+  },
+  "__v": 0
+}]
